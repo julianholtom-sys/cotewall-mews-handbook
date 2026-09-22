@@ -18,6 +18,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:24px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+main section{scroll-margin-top:24px}
 body{
   background:
     radial-gradient(1200px 500px at 10% -10%, rgba(79,114,130,.08), transparent 55%),
@@ -331,6 +332,8 @@ footer.doc{
 
 /* ---------- responsive ---------- */
 @media (max-width:860px){
+  html{scroll-padding-top:7.25rem}
+  main section{scroll-margin-top:7.25rem}
   .wrap{grid-template-columns:1fr;gap:0}
   nav.rail{
     padding:16px 0 0;
