@@ -90,6 +90,7 @@
   var libraryList = document.getElementById("library-list");
   var libraryCrumbs = document.getElementById("library-crumbs");
   var libraryStatus = document.getElementById("library-browser-status");
+  var libraryBack = document.getElementById("library-back");
   var libraryClose = document.getElementById("library-close");
   var libraryMsg = document.getElementById("library-gate-msg");
   var libraryTrail = [];
@@ -103,6 +104,17 @@
   function setBrowserStatus(text) {
     if (!libraryStatus) return;
     libraryStatus.textContent = text || "";
+  }
+
+  function updateBackButton() {
+    if (!libraryBack) return;
+    libraryBack.disabled = libraryTrail.length < 2;
+  }
+
+  function goBack() {
+    if (libraryTrail.length < 2) return;
+    var parent = libraryTrail[libraryTrail.length - 2];
+    openFolder(parent.id, parent.name, libraryTrail.length - 2);
   }
 
   function parseJsonResponse(res) {
@@ -143,6 +155,7 @@
         libraryCrumbs.appendChild(btn);
       }
     });
+    updateBackButton();
   }
 
   function renderItems(items) {
@@ -223,6 +236,7 @@
     libraryTrail = [];
     if (libraryList) libraryList.innerHTML = "";
     setBrowserStatus("");
+    updateBackButton();
   }
 
   function openFolder(id, name, trailIndex) {
@@ -295,6 +309,10 @@
           showLibraryMsg("Could not reach the server. Please try again.");
         });
     });
+  }
+
+  if (libraryBack) {
+    libraryBack.addEventListener("click", goBack);
   }
 
   if (libraryClose) {

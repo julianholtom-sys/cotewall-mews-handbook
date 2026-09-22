@@ -327,7 +327,8 @@ strong{font-weight:700}
 }
 .library-crumb-sep{color:var(--slate)}
 .library-crumb-current{color:var(--ink);font-weight:600}
-.library-close{
+.library-browser-actions{display:flex;gap:8px;flex:0 0 auto}
+.library-nav-btn{
   border:1px solid color-mix(in srgb, var(--slate) 30%, transparent);
   background:#fff;
   color:var(--ink-mid);
@@ -337,9 +338,12 @@ strong{font-weight:700}
   text-transform:uppercase;
   padding:8px 12px;
   cursor:pointer;
-  flex:0 0 auto;
 }
-.library-close:hover{border-color:var(--teal);color:var(--teal)}
+.library-nav-btn:hover:not(:disabled){border-color:var(--teal);color:var(--teal)}
+.library-nav-btn:disabled{
+  opacity:.4;
+  cursor:default;
+}
 .library-browser-status{
   min-height:1.2em;
   margin:0 0 8px;
