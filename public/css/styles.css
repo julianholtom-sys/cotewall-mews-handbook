@@ -264,8 +264,9 @@ strong{font-weight:700}
 .library-gate{margin:14px 0 18px}
 .library-gate label{
   display:block;
-  font-family:var(--display);
+  font-family:var(--sans);
   font-size:.78rem;
+  font-weight:600;
   letter-spacing:.06em;
   text-transform:uppercase;
   color:var(--slate);
@@ -285,10 +286,12 @@ strong{font-weight:700}
   border:0;
   background:var(--teal);
   color:#fff;
-  font-family:var(--display);
+  font-family:var(--sans);
   font-size:.78rem;
+  font-weight:600;
   letter-spacing:.06em;
   text-transform:uppercase;
+  line-height:1;
   padding:11px 18px;
   cursor:pointer;
 }
@@ -303,7 +306,7 @@ strong{font-weight:700}
 .library-browser-bar{
   display:flex;
   gap:12px;
-  align-items:flex-start;
+  align-items:center;
   justify-content:space-between;
   margin-bottom:10px;
 }
@@ -314,6 +317,7 @@ strong{font-weight:700}
   align-items:center;
   min-width:0;
   font-size:.95rem;
+  line-height:1.3;
 }
 .library-crumb{
   border:0;
@@ -327,22 +331,56 @@ strong{font-weight:700}
 }
 .library-crumb-sep{color:var(--slate)}
 .library-crumb-current{color:var(--ink);font-weight:600}
-.library-browser-actions{display:flex;gap:8px;flex:0 0 auto}
-.library-nav-btn{
+.library-browser-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+}
+
+/* Shared compact controls — same box for button and link */
+.library-nav-btn,
+.library-item-actions a,
+.library-item-actions button{
+  box-sizing:border-box;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:2.25rem;
+  margin:0;
   border:1px solid color-mix(in srgb, var(--slate) 30%, transparent);
   background:#fff;
   color:var(--ink-mid);
-  font-family:var(--display);
+  font-family:var(--sans);
   font-size:.72rem;
+  font-weight:600;
   letter-spacing:.06em;
+  line-height:1;
   text-transform:uppercase;
-  padding:8px 12px;
+  text-decoration:none;
+  padding:0 14px;
   cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
 }
-.library-nav-btn:hover:not(:disabled){border-color:var(--teal);color:var(--teal)}
+.library-nav-btn{min-width:4.75rem}
+.library-nav-btn:hover:not(:disabled),
+.library-item-actions a:hover,
+.library-item-actions button:hover{
+  border-color:var(--teal);
+  color:var(--teal);
+  background:var(--tint);
+}
 .library-nav-btn:disabled{
-  opacity:.4;
+  opacity:.42;
   cursor:default;
+}
+.library-item-actions a,
+.library-item-actions button{
+  border-color:color-mix(in srgb, var(--teal) 35%, transparent);
+  background:color-mix(in srgb, var(--tint) 70%, #fff);
+  color:var(--teal);
+  min-width:5.5rem;
 }
 .library-browser-status{
   min-height:1.2em;
@@ -361,8 +399,9 @@ strong{font-weight:700}
 }
 .library-item-main{min-width:0;display:flex;flex-direction:column;gap:2px}
 .library-item-kind{
-  font-family:var(--display);
+  font-family:var(--sans);
   font-size:.68rem;
+  font-weight:600;
   letter-spacing:.08em;
   text-transform:uppercase;
   color:var(--slate);
@@ -379,25 +418,7 @@ strong{font-weight:700}
 }
 .library-item--file .library-item-name{cursor:default}
 .library-item--dir .library-item-name:hover{color:var(--teal)}
-.library-item-actions{display:flex;gap:8px;flex:0 0 auto}
-.library-item-actions a,
-.library-item-actions button{
-  border:1px solid color-mix(in srgb, var(--teal) 35%, transparent);
-  background:color-mix(in srgb, var(--tint) 70%, #fff);
-  color:var(--teal);
-  font-family:var(--display);
-  font-size:.72rem;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  text-decoration:none;
-  padding:8px 12px;
-  cursor:pointer;
-}
-.library-item-actions a:hover,
-.library-item-actions button:hover{
-  border-color:var(--teal);
-  background:var(--tint);
-}
+.library-item-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
 .library-empty{
   padding:18px 0 8px;
   color:var(--slate);
