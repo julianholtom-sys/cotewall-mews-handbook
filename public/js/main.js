@@ -164,8 +164,7 @@
     if (!items.length) {
       var empty = document.createElement("li");
       empty.className = "library-empty";
-      empty.textContent =
-        "No documents have been published in this folder yet.";
+      empty.textContent = "This folder is empty.";
       libraryList.appendChild(empty);
       return;
     }
@@ -278,7 +277,7 @@
     showLibraryMsg("");
     showBrowser();
     libraryTrail = [];
-    openFolder(rootId, rootName || "Residents' Document Library", 0);
+    openFolder(rootId, rootName || "Society documents", 0);
   }
 
   if (libraryForm) {

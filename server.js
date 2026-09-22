@@ -31,9 +31,10 @@ const LIBRARY_PASSWORD = process.env.RESIDENT_LIBRARY_PASSWORD || "";
 const LIBRARY_DRIVE_ID = process.env.RESIDENT_LIBRARY_DRIVE_ID || "4047143";
 const LIBRARY_SHARE_UUID =
   process.env.RESIDENT_LIBRARY_SHARE_UUID ||
-  "e81fda38-3555-43b0-bfab-2b9eed9a7d20";
-const LIBRARY_ROOT_ID = Number(process.env.RESIDENT_LIBRARY_ROOT_ID || 15);
-const LIBRARY_ROOT_NAME = "Residents' Document Library";
+  "60945e17-1111-4f92-90c3-185f6ff51d5c";
+const LIBRARY_ROOT_ID = Number(process.env.RESIDENT_LIBRARY_ROOT_ID || 6);
+const LIBRARY_ROOT_NAME =
+  process.env.RESIDENT_LIBRARY_ROOT_NAME || "Society documents";
 const SESSION_COOKIE = "cw_library";
 const SESSION_TTL_MS = 4 * 60 * 60 * 1000;
 
