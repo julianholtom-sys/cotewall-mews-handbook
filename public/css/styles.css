@@ -295,6 +295,111 @@ strong{font-weight:700}
 .library-gate button:hover{background:color-mix(in srgb, var(--teal) 88%, #000)}
 .library-gate-msg{margin:10px 0 0;color:var(--rust);font-size:.95rem}
 
+.library-browser{
+  margin:16px 0 8px;
+  border-top:1px solid color-mix(in srgb, var(--slate) 22%, transparent);
+  padding-top:14px;
+}
+.library-browser-bar{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.library-crumbs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  min-width:0;
+  font-size:.95rem;
+}
+.library-crumb{
+  border:0;
+  background:none;
+  color:var(--teal);
+  font:inherit;
+  padding:0;
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.library-crumb-sep{color:var(--slate)}
+.library-crumb-current{color:var(--ink);font-weight:600}
+.library-close{
+  border:1px solid color-mix(in srgb, var(--slate) 30%, transparent);
+  background:#fff;
+  color:var(--ink-mid);
+  font-family:var(--display);
+  font-size:.72rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:8px 12px;
+  cursor:pointer;
+  flex:0 0 auto;
+}
+.library-close:hover{border-color:var(--teal);color:var(--teal)}
+.library-browser-status{
+  min-height:1.2em;
+  margin:0 0 8px;
+  color:var(--slate);
+  font-size:.95rem;
+}
+.library-list{list-style:none;margin:0;padding:0}
+.library-item{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid color-mix(in srgb, var(--slate) 16%, transparent);
+}
+.library-item-main{min-width:0;display:flex;flex-direction:column;gap:2px}
+.library-item-kind{
+  font-family:var(--display);
+  font-size:.68rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--slate);
+}
+.library-item-name{
+  border:0;
+  background:none;
+  color:var(--ink);
+  font:inherit;
+  font-weight:600;
+  text-align:left;
+  padding:0;
+  cursor:pointer;
+}
+.library-item--file .library-item-name{cursor:default}
+.library-item--dir .library-item-name:hover{color:var(--teal)}
+.library-item-actions{display:flex;gap:8px;flex:0 0 auto}
+.library-item-actions a,
+.library-item-actions button{
+  border:1px solid color-mix(in srgb, var(--teal) 35%, transparent);
+  background:color-mix(in srgb, var(--tint) 70%, #fff);
+  color:var(--teal);
+  font-family:var(--display);
+  font-size:.72rem;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:8px 12px;
+  cursor:pointer;
+}
+.library-item-actions a:hover,
+.library-item-actions button:hover{
+  border-color:var(--teal);
+  background:var(--tint);
+}
+.library-empty{
+  padding:18px 0 8px;
+  color:var(--slate);
+  font-style:italic;
+}
+
 /* paired cards */
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
 .card{

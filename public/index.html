@@ -275,7 +275,7 @@
   <p>The library may include governing documents where appropriate, annual accounts, expenditure information, insurance documents, AGM records, statutory/company documents, and maintenance information — as and when those records have been published into it by the Directors. Director-only material (for example claims files and original bank statements) is kept outside this library and is not on the public link.</p>
   <div class="callout">
     <p><strong>Residents' Document Library (view / download only)</strong></p>
-    <p>Access is password-protected so casual visitors to this website cannot open Society files. Residents receive the password from the Directors (it is not published here). No Infomaniak account or invitation is required.</p>
+    <p>Access is password-protected so casual visitors to this website cannot open Society files. Residents receive the password from the Directors (it is not published here). Everything opens on this website — you will only see the published library folders and may view or save files from them.</p>
     <form id="library-gate" class="library-gate" autocomplete="off">
       <label for="library-password">Library password</label>
       <div class="library-gate-row">
@@ -284,6 +284,14 @@
       </div>
       <p id="library-gate-msg" class="library-gate-msg" role="status" aria-live="polite" hidden></p>
     </form>
+    <div id="library-browser" class="library-browser" hidden>
+      <div class="library-browser-bar">
+        <nav id="library-crumbs" class="library-crumbs" aria-label="Library location"></nav>
+        <button type="button" id="library-close" class="library-close">Close</button>
+      </div>
+      <p id="library-browser-status" class="library-browser-status" role="status" aria-live="polite"></p>
+      <ul id="library-list" class="library-list"></ul>
+    </div>
     <p>Documents appear in the library only after a Director has published them. Other requests may be sent to <a href="mailto:directors@cotewall-mews.ltd">directors@cotewall-mews.ltd</a>.</p>
   </div>
 </section>
