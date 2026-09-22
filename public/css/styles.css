@@ -332,10 +332,13 @@ strong{font-weight:700}
 .library-crumb-sep{color:var(--slate)}
 .library-crumb-current{color:var(--ink);font-weight:600}
 .library-browser-actions{
-  display:flex;
-  align-items:center;
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:5.5rem;
+  align-items:stretch;
   gap:8px;
   flex:0 0 auto;
+  height:36px;
 }
 
 /* Shared compact controls — same box for button and link */
@@ -346,24 +349,33 @@ strong{font-weight:700}
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  height:2.25rem;
+  width:100%;
+  height:36px;
+  min-height:36px;
+  max-height:36px;
   margin:0;
   border:1px solid color-mix(in srgb, var(--slate) 30%, transparent);
   background:#fff;
   color:var(--ink-mid);
   font-family:var(--sans);
-  font-size:.72rem;
+  font-size:11px;
   font-weight:600;
   letter-spacing:.06em;
   line-height:1;
   text-transform:uppercase;
   text-decoration:none;
-  padding:0 14px;
+  padding:0 12px;
   cursor:pointer;
   appearance:none;
   -webkit-appearance:none;
+  white-space:nowrap;
+  overflow:hidden;
+  vertical-align:middle;
 }
-.library-nav-btn{min-width:4.75rem}
+.library-nav-btn{
+  width:100%;
+  min-width:0;
+}
 .library-nav-btn:hover:not(:disabled),
 .library-item-actions a:hover,
 .library-item-actions button:hover{
@@ -375,12 +387,25 @@ strong{font-weight:700}
   opacity:.42;
   cursor:default;
 }
+.library-nav-btn:focus,
+.library-nav-btn:focus-visible{
+  outline:2px solid color-mix(in srgb, var(--teal) 55%, transparent);
+  outline-offset:2px;
+}
+.library-item-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+  height:36px;
+}
 .library-item-actions a,
 .library-item-actions button{
+  width:auto;
+  min-width:5.5rem;
   border-color:color-mix(in srgb, var(--teal) 35%, transparent);
   background:color-mix(in srgb, var(--tint) 70%, #fff);
   color:var(--teal);
-  min-width:5.5rem;
 }
 .library-browser-status{
   min-height:1.2em;
@@ -418,7 +443,6 @@ strong{font-weight:700}
 }
 .library-item--file .library-item-name{cursor:default}
 .library-item--dir .library-item-name:hover{color:var(--teal)}
-.library-item-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
 .library-empty{
   padding:18px 0 8px;
   color:var(--slate);
