@@ -84,4 +84,58 @@
   }
 
   setOn("scope");
+
+  var libraryForm = document.getElementById("library-gate");
+  if (libraryForm) {
+    var libraryMsg = document.getElementById("library-gate-msg");
+    libraryForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var input = document.getElementById("library-password");
+      var password = input ? input.value : "";
+      if (libraryMsg) {
+        libraryMsg.hidden = true;
+        libraryMsg.textContent = "";
+      }
+      fetch("/api/library-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: password }),
+      })
+        .then(function (res) {
+          return res.text().then(function (text) {
+            var data = null;
+            try {
+              data = text ? JSON.parse(text) : null;
+            } catch (_) {
+              data = null;
+            }
+            return { ok: res.ok, status: res.status, data: data, raw: text };
+          });
+        })
+        .then(function (result) {
+          if (result.ok && result.data && result.data.url) {
+            window.open(result.data.url, "_blank", "noopener,noreferrer");
+            return;
+          }
+          if (libraryMsg) {
+            libraryMsg.hidden = false;
+            if (result.status === 404) {
+              libraryMsg.textContent =
+                "Library access is not available on this server yet. Ask a Director to deploy the latest site update.";
+            } else {
+              libraryMsg.textContent =
+                (result.data && result.data.error) ||
+                "Could not open the library. Please try again.";
+            }
+          }
+        })
+        .catch(function () {
+          if (libraryMsg) {
+            libraryMsg.hidden = false;
+            libraryMsg.textContent =
+              "Could not reach the server. Please try again.";
+          }
+        });
+    });
+  }
 })();

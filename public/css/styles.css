@@ -261,6 +261,40 @@ strong{font-weight:700}
 }
 .callout :last-child{margin-bottom:10px}
 
+.library-gate{margin:14px 0 18px}
+.library-gate label{
+  display:block;
+  font-family:var(--display);
+  font-size:.78rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--slate);
+  margin:0 0 8px;
+}
+.library-gate-row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.library-gate input{
+  flex:1 1 12rem;
+  min-width:0;
+  border:1px solid color-mix(in srgb, var(--slate) 28%, transparent);
+  background:#fff;
+  color:var(--ink);
+  padding:11px 14px;
+  font:inherit;
+}
+.library-gate button{
+  border:0;
+  background:var(--teal);
+  color:#fff;
+  font-family:var(--display);
+  font-size:.78rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:11px 18px;
+  cursor:pointer;
+}
+.library-gate button:hover{background:color-mix(in srgb, var(--teal) 88%, #000)}
+.library-gate-msg{margin:10px 0 0;color:var(--rust);font-size:.95rem}
+
 /* paired cards */
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
 .card{
