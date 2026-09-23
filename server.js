@@ -104,6 +104,7 @@ app.get("/api/library/health", (_req, res) => {
     ok: true,
     kdrive: Boolean(process.env.KDRIVE_API_TOKEN),
     smtp: mail.smtpConfigured(),
+    dataDir: process.env.DATA_DIR || null,
   });
 });
 
