@@ -13,6 +13,7 @@
   --band:#F2F6F7;
   --serif:"Source Serif 4", Cambria, Georgia, serif;
   --sans:"Source Sans 3", Calibri, "Segoe UI", system-ui, sans-serif;
+  --display:"Cinzel", "Source Serif 4", Cambria, Georgia, serif;
   --ease:cubic-bezier(.22,1,.36,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -58,11 +59,13 @@ header.mast::after{display:none}
   animation:rise .7s var(--ease) 0s forwards;
 }
 .mast .kicker{
-  color:rgba(197,160,70,.85);
-  font-weight:700;
-  font-size:.78rem;
-  letter-spacing:.32em;
+  font-family:var(--display);
+  font-weight:600;
+  font-size:clamp(2.5rem,6.2vw,3.85rem);
+  line-height:1.05;
+  letter-spacing:.04em;
   text-transform:uppercase;
+  color:rgba(197,160,70,.85);
   opacity:0;
   animation:rise .7s var(--ease) .05s forwards;
 }
