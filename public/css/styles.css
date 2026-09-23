@@ -99,14 +99,19 @@ header.mast::after{display:none}
   text-align:center;
   white-space:nowrap;
 }
-.mast h1{
+.mast h2{
+  display:block;
   font-family:var(--display);
   font-weight:600;
   color:#fff;
-  font-size:clamp(2.5rem,6.2vw,3.85rem);
-  line-height:1.05;
-  margin-top:18px;
-  letter-spacing:-.02em;
+  font-size:clamp(1.45rem,2.4vw,1.75rem);
+  line-height:1.2;
+  margin:18px 0 0;
+  padding:0;
+  letter-spacing:.01em;
+  border:0;
+  gap:0;
+  align-items:unset;
   white-space:nowrap;
   opacity:0;
   animation:rise .8s var(--ease) .14s forwards;
@@ -234,7 +239,7 @@ section{
 section.in{opacity:1;transform:none}
 section:last-of-type{margin-bottom:0}
 @media (prefers-reduced-motion:reduce){
-  .mast .kicker,.mast h1,.mast .tag,.mast .jump{animation:none;opacity:1}
+  .mast .kicker,.mast h2,.mast .tag,.mast .jump{animation:none;opacity:1}
   section{opacity:1;transform:none;transition:none}
 }
 h2{
