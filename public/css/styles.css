@@ -59,15 +59,27 @@ header.mast::after{display:none}
   animation:rise .7s var(--ease) 0s forwards;
 }
 .mast .kicker{
+  color:rgba(197,160,70,.85);
+  text-transform:uppercase;
+  opacity:0;
+  animation:rise .7s var(--ease) .05s forwards;
+}
+.mast .kicker-brand{
+  display:block;
   font-family:var(--display);
   font-weight:600;
   font-size:clamp(2.5rem,6.2vw,3.85rem);
   line-height:1.05;
   letter-spacing:.04em;
-  text-transform:uppercase;
-  color:rgba(197,160,70,.85);
-  opacity:0;
-  animation:rise .7s var(--ease) .05s forwards;
+}
+.mast .kicker-sub{
+  display:block;
+  margin-top:.55em;
+  font-family:var(--sans);
+  font-weight:700;
+  font-size:1.02rem;
+  letter-spacing:.14em;
+  line-height:1.3;
 }
 .mast h1{
   font-family:var(--serif);
