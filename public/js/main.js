@@ -34,13 +34,18 @@
     var size = parseFloat(window.getComputedStyle(sub).fontSize) || 24;
     var width = sub.getBoundingClientRect().width;
     if (width < 1) return;
-    size = Math.max(14, Math.min(size * (target / width), 64));
+    size = Math.max(14, size * (target / width));
     sub.style.fontSize = size.toFixed(2) + "px";
   }
-  fitKickerSub();
+  function scheduleFitKickerSub() {
+    fitKickerSub();
+    window.setTimeout(fitKickerSub, 50);
+    window.setTimeout(fitKickerSub, 300);
+  }
+  scheduleFitKickerSub();
   window.addEventListener("resize", fitKickerSub);
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(fitKickerSub).catch(function () {});
+    document.fonts.ready.then(scheduleFitKickerSub).catch(function () {});
   }
 
   var links = Array.prototype.slice.call(
