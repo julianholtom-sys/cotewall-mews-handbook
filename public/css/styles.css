@@ -79,7 +79,7 @@ header.mast::after{display:none}
   display:block;
   margin-top:.35em;
   font-family:var(--sans);
-  font-weight:700;
+  font-weight:200;
   font-size:clamp(2rem,5.1vw,3.1rem);
   letter-spacing:.14em;
   line-height:1.15;
