@@ -622,8 +622,8 @@ footer.doc{
 .guide-choice::after{
   content:"\2192";
   flex:none;
-  width:1.25em;
-  font-size:1.35rem;
+  width:1.6em;
+  font-size:1.85rem;
   font-weight:400;
   line-height:1;
   text-align:center;
@@ -742,11 +742,12 @@ footer.doc{
   .guide{animation:none;opacity:1}
   .guide-choice::after{
     transition:opacity .15s ease;
-    transform:rotate(-45deg);
+    transform:none;
   }
   .guide-choice:hover::after,
   .guide-choice:focus-visible::after{
-    transform:rotate(-45deg);
+    animation:none;
+    transform:none;
   }
 }
 
