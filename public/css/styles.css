@@ -193,9 +193,9 @@ main{padding:56px 0 96px;max-width:74ch;min-width:0}
   font-family:var(--display);
   font-weight:600;
   color:var(--ink);
-  font-size:clamp(2.5rem,6.2vw,3.85rem);
-  line-height:1.05;
-  letter-spacing:-.02em;
+  font-size:clamp(1.85rem,3.2vw,2.35rem);
+  line-height:1.15;
+  letter-spacing:-.01em;
   margin:0;
 }
 .doc-intro .doc-lead{
