@@ -29,7 +29,7 @@
     var sub = document.querySelector(".mast .kicker-sub");
     if (!brand || !sub) return;
     sub.style.fontSize = "";
-    var target = brand.getBoundingClientRect().width * 0.8;
+    var target = brand.getBoundingClientRect().width * 0.85;
     if (target < 40) return;
     var size = parseFloat(window.getComputedStyle(sub).fontSize) || 24;
     var width = sub.getBoundingClientRect().width;
