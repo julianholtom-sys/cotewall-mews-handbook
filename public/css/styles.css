@@ -77,15 +77,13 @@ header.mast::after{display:none}
 }
 .mast .kicker-sub{
   display:block;
-  margin-top:.4em;
-  width:80%;
-  box-sizing:border-box;
+  margin-top:.35em;
   font-family:var(--sans);
   font-weight:700;
-  /* ~55% of brand size so the longer line spans ~80% of Cotewall Mews width */
-  font-size:clamp(1.35rem,3.4vw,2.1rem);
-  letter-spacing:.1em;
-  line-height:1.2;
+  /* ~80% of Cotewall Mews line width (longer phrase → slightly smaller type + tracking) */
+  font-size:clamp(2rem,5.1vw,3.1rem);
+  letter-spacing:.14em;
+  line-height:1.15;
   white-space:nowrap;
 }
 .mast h1{
