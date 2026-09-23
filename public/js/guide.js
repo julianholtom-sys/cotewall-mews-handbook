@@ -381,8 +381,18 @@
           "</a>";
       }
       if (node.mail) {
+        var subject =
+          "Cotewall Mews: " + (node.mailSubject || node.question || "Enquiry");
+        var body =
+          "Hello,\n\nI used the Quick guide on the residents' website about:\n" +
+          (node.mailSubject || node.question || "an enquiry") +
+          "\n\n(Please add apartment number and details below.)\n\n";
         html +=
-          '<a class="secondary" href="mailto:directors@cotewall-mews.ltd">Email the directors</a>';
+          '<a class="secondary" href="mailto:directors@cotewall-mews.ltd?subject=' +
+          encodeURIComponent(subject) +
+          "&body=" +
+          encodeURIComponent(body) +
+          '">Email the directors</a>';
       }
       html += "</div>";
       html += '<div class="guide-nav">';
