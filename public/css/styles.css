@@ -734,7 +734,14 @@ footer.doc{
 .guide-actions a:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){
   .guide{animation:none;opacity:1}
-  .guide-choice:hover{transform:none}
+  .guide-choice::after{
+    transition:opacity .15s ease;
+    transform:rotate(-45deg);
+  }
+  .guide-choice:hover::after,
+  .guide-choice:focus-visible::after{
+    transform:rotate(-45deg);
+  }
 }
 
 /* ---------- responsive ---------- */
