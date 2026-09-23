@@ -29,13 +29,6 @@
     var sub = document.querySelector(".mast .kicker-sub");
     if (!brand || !sub) return;
     sub.style.fontSize = "";
-    var target = brand.getBoundingClientRect().width * 0.85;
-    if (target < 40) return;
-    var size = parseFloat(window.getComputedStyle(sub).fontSize) || 24;
-    var width = sub.getBoundingClientRect().width;
-    if (width < 1) return;
-    size = Math.max(14, size * (target / width));
-    sub.style.fontSize = size.toFixed(2) + "px";
   }
   function scheduleFitKickerSub() {
     fitKickerSub();
