@@ -632,7 +632,7 @@ footer.doc{
   border-right:3px solid var(--brand);
   border-bottom:3px solid var(--brand);
   opacity:0;
-  transform:rotate(-45deg) translateX(-10px);
+  transform:translateX(-10px) rotate(-45deg);
   transition:opacity .28s var(--ease), transform .28s var(--ease);
 }
 .guide-choice:hover,
@@ -645,13 +645,13 @@ footer.doc{
 .guide-choice:hover::after,
 .guide-choice:focus-visible::after{
   opacity:1;
-  transform:rotate(-45deg) translateX(0);
+  transform:translateX(0) rotate(-45deg);
   animation:guide-arrow-nudge .9s var(--ease) .28s infinite;
 }
 .guide-choice:focus-visible{box-shadow:0 0 0 2px color-mix(in srgb, var(--brand) 35%, transparent)}
 @keyframes guide-arrow-nudge{
-  0%,100%{transform:rotate(-45deg) translateX(0)}
-  50%{transform:rotate(-45deg) translateX(7px)}
+  0%,100%{transform:translateX(0) rotate(-45deg)}
+  50%{transform:translateX(7px) rotate(-45deg)}
 }
 .guide-nav{
   display:flex;
