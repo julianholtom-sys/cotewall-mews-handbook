@@ -620,15 +620,16 @@ footer.doc{
   transition:border-color .2s ease, background .2s ease, color .2s ease;
 }
 .guide-choice::after{
-  content:"";
+  content:"\2192";
   flex:none;
-  width:.7em;
-  height:.7em;
-  margin-right:.1em;
-  border-right:2.5px solid var(--brand);
-  border-bottom:2.5px solid var(--brand);
-  transform:rotate(-45deg) translateX(-10px);
+  width:1.25em;
+  font-size:1.35rem;
+  font-weight:400;
+  line-height:1;
+  text-align:center;
+  color:var(--brand);
   opacity:0;
+  transform:translateX(-10px);
   transition:opacity .28s var(--ease), transform .28s var(--ease);
 }
 .guide-choice:hover,
@@ -641,9 +642,14 @@ footer.doc{
 .guide-choice:hover::after,
 .guide-choice:focus-visible::after{
   opacity:1;
-  transform:rotate(-45deg) translateX(0);
+  transform:translateX(0);
+  animation:guide-arrow-nudge .9s var(--ease) .28s infinite;
 }
 .guide-choice:focus-visible{box-shadow:0 0 0 2px color-mix(in srgb, var(--brand) 35%, transparent)}
+@keyframes guide-arrow-nudge{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(7px)}
+}
 .guide-nav{
   display:flex;
   flex-wrap:wrap;
