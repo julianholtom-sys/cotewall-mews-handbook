@@ -84,9 +84,9 @@ header.mast::after{display:none}
   margin:.175em 0 0;
   padding:0;
   font-family:var(--sans);
-  font-weight:200;
+  font-weight:300;
   font-size:clamp(1.05rem,2.4vw,1.4rem);
-  letter-spacing:.18em;
+  letter-spacing:.36em;
   line-height:1;
   text-align:center;
   white-space:nowrap;
