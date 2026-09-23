@@ -35,9 +35,16 @@ const LIBRARY_SHARE_UUID =
 const LIBRARY_ROOT_ID = Number(process.env.RESIDENT_LIBRARY_ROOT_ID || 6);
 const LIBRARY_ROOT_NAME =
   process.env.RESIDENT_LIBRARY_ROOT_NAME || "Society documents";
-/** Directors-only: Digital Services & Administration (default folder id 14). */
+/**
+ * Directors-only folders kept out of the resident website library.
+ * Default ids cover known Society-tree folders; name matching also catches
+ * year copies (e.g. Bank Statements under 2026/2027).
+ */
 const LIBRARY_EXCLUDED_IDS = new Set(
-  String(process.env.RESIDENT_LIBRARY_EXCLUDED_IDS || "14")
+  String(
+    process.env.RESIDENT_LIBRARY_EXCLUDED_IDS ||
+      "14,24,69,74,96,100,104,106"
+  )
     .split(",")
     .map(function (part) {
       return Number(String(part).trim());
@@ -201,9 +208,17 @@ function normalizeFolderLabel(name) {
 
 function isDirectorsOnlyName(name) {
   const label = normalizeFolderLabel(name);
-  return (
-    label.includes("DIGITAL SERVICES") && label.includes("ADMINISTRATION")
-  );
+  if (!label) return false;
+  if (label.includes("DIGITAL SERVICES") && label.includes("ADMINISTRATION")) {
+    return true;
+  }
+  if (label.includes("BANK STATEMENTS")) return true;
+  if (label.includes("DIRECTORS - ORIGINAL STATEMENTS")) return true;
+  if (label.includes("CLAIMS") && label.includes("DIRECTORS ONLY")) return true;
+  if (label === "DIRECTORS MEETINGS" || label.includes("DIRECTORS MEETINGS")) {
+    return true;
+  }
+  return false;
 }
 
 function isExcludedLibraryItem(item) {
