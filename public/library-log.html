@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library access log · Cotewall Mews</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css?v=25">
+</head>
+<body>
+<header class="mast">
+  <div class="mast-inner">
+    <a href="/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:1rem">
+      <img class="mast-logo" src="/img/cwm-logo.svg" width="72" height="72" alt="Cotewall Mews">
+      <div class="kicker">
+        <span class="kicker-brand">Cotewall Mews</span>
+        <h4 class="kicker-sub">Access log</h4>
+      </div>
+    </a>
+  </div>
+</header>
+<main class="doc">
+  <section class="library-standalone">
+    <h1>Library access log</h1>
+    <p id="log-gate" class="callout" hidden>Directors only. Sign in to the document library first, then reopen this page.</p>
+    <div id="log-panel" hidden>
+      <div class="library-gate-row library-log-filter">
+        <label for="log-user">Filter by user</label>
+        <select id="log-user">
+          <option value="">All users</option>
+        </select>
+        <button type="button" id="log-refresh" class="library-nav-btn">Refresh</button>
+        <a class="library-nav-btn" href="/#documents">Back to documents</a>
+      </div>
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>User</th>
+              <th>Action</th>
+              <th>Path</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody id="log-body"></tbody>
+        </table>
+      </div>
+      <h2>Registered users</h2>
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Password</th>
+              <th>Last login</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var gate = document.getElementById("log-gate");
+  var panel = document.getElementById("log-panel");
+  var body = document.getElementById("log-body");
+  var usersBody = document.getElementById("users-body");
+  var userSelect = document.getElementById("log-user");
+
+  function fmt(ts) {
+    if (!ts) return "—";
+    try {
+      return new Date(ts).toLocaleString("en-GB");
+    } catch (_) {
+      return String(ts);
+    }
+  }
+
+  function loadLog() {
+    var q = userSelect.value ? "?userId=" + encodeURIComponent(userSelect.value) : "";
+    return fetch("/api/library/log" + q, { credentials: "same-origin" })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, status: res.status, data: data };
+        });
+      })
+      .then(function (result) {
+        if (!result.ok) {
+          panel.hidden = true;
+          gate.hidden = false;
+          return;
+        }
+        gate.hidden = true;
+        panel.hidden = false;
+        body.innerHTML = "";
+        (result.data.items || []).forEach(function (row) {
+          var tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td data-label=\"When\">" +
+            fmt(row.timestamp) +
+            "</td><td data-label=\"User\">" +
+            (row.email || "—") +
+            "</td><td data-label=\"Action\">" +
+            row.action +
+            "</td><td data-label=\"Path\">" +
+            (row.file_path || "—") +
+            "</td><td data-label=\"IP\">" +
+            (row.ip_address || "—") +
+            "</td>";
+          body.appendChild(tr);
+        });
+      });
+  }
+
+  function loadUsers() {
+    return fetch("/api/library/users", { credentials: "same-origin" })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, data: data };
+        });
+      })
+      .then(function (result) {
+        if (!result.ok) return;
+        var current = userSelect.value;
+        userSelect.innerHTML = '<option value="">All users</option>';
+        usersBody.innerHTML = "";
+        (result.data.users || []).forEach(function (u) {
+          var opt = document.createElement("option");
+          opt.value = String(u.id);
+          opt.textContent = u.email + " (" + u.role + ")";
+          userSelect.appendChild(opt);
+
+          var tr = document.createElement("tr");
+          var clearCell = document.createElement("td");
+          clearCell.setAttribute("data-label", "");
+          if (u.has_password) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "library-nav-btn";
+            btn.textContent = "Clear password";
+            btn.addEventListener("click", function () {
+              if (
+                !window.confirm(
+                  "Clear password for " +
+                    u.email +
+                    "? They must set a new one on next sign-in."
+                )
+              ) {
+                return;
+              }
+              fetch("/api/library/users/" + u.id + "/clear-password", {
+                method: "POST",
+                credentials: "same-origin",
+              }).then(function () {
+                loadUsers();
+                loadLog();
+              });
+            });
+            clearCell.appendChild(btn);
+          } else {
+            clearCell.textContent = "—";
+          }
+          tr.innerHTML =
+            "<td data-label=\"Email\">" +
+            u.email +
+            "</td><td data-label=\"Role\">" +
+            u.role +
+            "</td><td data-label=\"Password\">" +
+            (u.has_password ? "Set" : "Not set") +
+            "</td><td data-label=\"Last login\">" +
+            fmt(u.last_login) +
+            "</td>";
+          tr.appendChild(clearCell);
+          usersBody.appendChild(tr);
+        });
+        userSelect.value = current;
+      });
+  }
+
+  fetch("/api/library/session", { credentials: "same-origin" })
+    .then(function (res) {
+      return res.json().then(function (data) {
+        return { ok: res.ok, data: data };
+      });
+    })
+    .then(function (result) {
+      if (!result.ok || !result.data.user || result.data.user.role !== "director") {
+        gate.hidden = false;
+        panel.hidden = true;
+        return;
+      }
+      loadUsers().then(loadLog);
+    })
+    .catch(function () {
+      gate.hidden = false;
+    });
+
+  document.getElementById("log-refresh").addEventListener("click", function () {
+    loadLog();
+  });
+  userSelect.addEventListener("change", loadLog);
+})();
+</script>
+</body>
+</html>

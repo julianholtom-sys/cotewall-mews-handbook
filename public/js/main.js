@@ -125,7 +125,9 @@
     });
   }
 
-  var libraryForm = document.getElementById("library-gate");
+  var libraryGate = document.getElementById("library-gate");
+  var libraryEmailForm = document.getElementById("library-email-form");
+  var libraryPasswordForm = document.getElementById("library-password-form");
   var libraryBrowser = document.getElementById("library-browser");
   var libraryList = document.getElementById("library-list");
   var libraryCrumbs = document.getElementById("library-crumbs");
@@ -133,7 +135,15 @@
   var libraryBack = document.getElementById("library-back");
   var libraryClose = document.getElementById("library-close");
   var libraryMsg = document.getElementById("library-gate-msg");
+  var libraryPasswordHint = document.getElementById("library-password-hint");
+  var libraryPasswordSubmit = document.getElementById("library-password-submit");
+  var libraryUserLabel = document.getElementById("library-user-label");
+  var libraryLogLink = document.getElementById("library-log-link");
+  var libraryEmailInput = document.getElementById("library-email");
+  var libraryPasswordInput = document.getElementById("library-password");
   var libraryTrail = [];
+  var pendingEmail = "";
+  var loginMode = "password";
 
   function showLibraryMsg(text) {
     if (!libraryMsg) return;
@@ -252,7 +262,10 @@
         actions.appendChild(browse);
       } else {
         var view = document.createElement("a");
-        view.href = "/api/library/download/" + item.id;
+        view.href =
+          "/api/library/file/" +
+          item.id +
+          "?disposition=inline";
         view.target = "_blank";
         view.rel = "noopener noreferrer";
         view.textContent = "View / save";
@@ -265,15 +278,56 @@
   }
 
   function showBrowser() {
-    if (libraryForm) libraryForm.hidden = true;
+    if (libraryGate) libraryGate.hidden = true;
     if (libraryBrowser) libraryBrowser.hidden = false;
+  }
+
+  function showEmailStep() {
+    pendingEmail = "";
+    loginMode = "password";
+    if (libraryGate) libraryGate.hidden = false;
+    if (libraryEmailForm) libraryEmailForm.hidden = false;
+    if (libraryPasswordForm) libraryPasswordForm.hidden = true;
+    if (libraryPasswordInput) {
+      libraryPasswordInput.value = "";
+      libraryPasswordInput.autocomplete = "current-password";
+    }
+    if (libraryPasswordSubmit) libraryPasswordSubmit.textContent = "Sign in";
+    if (libraryPasswordHint) libraryPasswordHint.textContent = "";
+  }
+
+  function showPasswordStep(email, mode) {
+    pendingEmail = email;
+    loginMode = mode;
+    if (libraryEmailForm) libraryEmailForm.hidden = true;
+    if (libraryPasswordForm) libraryPasswordForm.hidden = false;
+    if (libraryPasswordInput) {
+      libraryPasswordInput.value = "";
+      libraryPasswordInput.autocomplete =
+        mode === "set" ? "new-password" : "current-password";
+      libraryPasswordInput.focus();
+    }
+    if (libraryPasswordSubmit) {
+      libraryPasswordSubmit.textContent =
+        mode === "set" ? "Set password & sign in" : "Sign in";
+    }
+    if (libraryPasswordHint) {
+      libraryPasswordHint.textContent =
+        mode === "set"
+          ? "First visit for " +
+            email +
+            ". Choose a password of at least 12 characters."
+          : "Enter the password for " + email + ".";
+    }
   }
 
   function hideBrowser() {
     if (libraryBrowser) libraryBrowser.hidden = true;
-    if (libraryForm) libraryForm.hidden = false;
+    showEmailStep();
     libraryTrail = [];
     if (libraryList) libraryList.innerHTML = "";
+    if (libraryUserLabel) libraryUserLabel.textContent = "";
+    if (libraryLogLink) libraryLogLink.hidden = true;
     setBrowserStatus("");
     updateBackButton();
   }
@@ -313,35 +367,118 @@
       });
   }
 
-  function unlockLibrary(rootId, rootName) {
+  function unlockLibrary(payload) {
     showLibraryMsg("");
     showBrowser();
     libraryTrail = [];
-    openFolder(rootId, rootName || "Society documents", 0);
+    if (libraryUserLabel && payload.user) {
+      libraryUserLabel.textContent = payload.user.email;
+    }
+    if (libraryLogLink) {
+      libraryLogLink.hidden = !(payload.user && payload.user.role === "director");
+    }
+    openFolder(
+      payload.rootId,
+      payload.rootName || "Society documents",
+      0
+    );
   }
 
-  if (libraryForm) {
-    libraryForm.addEventListener("submit", function (e) {
+  if (libraryEmailForm) {
+    libraryEmailForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      var input = document.getElementById("library-password");
-      var password = input ? input.value : "";
+      var email = libraryEmailInput ? libraryEmailInput.value.trim() : "";
       showLibraryMsg("");
-      fetch("/api/library-access", {
+      fetch("/api/library/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({ password: password }),
+        body: JSON.stringify({ email: email }),
+      })
+        .then(parseJsonResponse)
+        .then(function (result) {
+          if (!result.ok) {
+            showLibraryMsg(
+              (result.data && result.data.error) ||
+                "Could not continue. Please try again."
+            );
+            return;
+          }
+          if (result.data.status === "need_set_password") {
+            showPasswordStep(result.data.email, "set");
+            return;
+          }
+          if (result.data.status === "need_password") {
+            showPasswordStep(result.data.email, "password");
+            return;
+          }
+          showLibraryMsg("Could not continue. Please try again.");
+        })
+        .catch(function () {
+          showLibraryMsg("Could not reach the server. Please try again.");
+        });
+    });
+  }
+
+  if (libraryPasswordForm) {
+    libraryPasswordForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var password = libraryPasswordInput ? libraryPasswordInput.value : "";
+      showLibraryMsg("");
+      fetch("/api/library/password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ email: pendingEmail, password: password }),
       })
         .then(parseJsonResponse)
         .then(function (result) {
           if (result.ok && result.data && result.data.ok) {
-            if (input) input.value = "";
-            unlockLibrary(result.data.rootId, result.data.rootName);
+            if (libraryPasswordInput) libraryPasswordInput.value = "";
+            unlockLibrary(result.data);
             return;
           }
           showLibraryMsg(
             (result.data && result.data.error) ||
-              "Could not open the library. Please try again."
+              "Could not sign in. Please try again."
+          );
+        })
+        .catch(function () {
+          showLibraryMsg("Could not reach the server. Please try again.");
+        });
+    });
+  }
+
+  var backEmail = document.getElementById("library-back-email");
+  if (backEmail) {
+    backEmail.addEventListener("click", function () {
+      showLibraryMsg("");
+      showEmailStep();
+    });
+  }
+
+  var forgotBtn = document.getElementById("library-forgot");
+  if (forgotBtn) {
+    forgotBtn.addEventListener("click", function () {
+      var email =
+        pendingEmail ||
+        (libraryEmailInput ? libraryEmailInput.value.trim() : "");
+      if (!email) {
+        showLibraryMsg("Enter your email address first.");
+        return;
+      }
+      showLibraryMsg("");
+      fetch("/api/library/forgot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ email: email }),
+      })
+        .then(parseJsonResponse)
+        .then(function (result) {
+          showLibraryMsg(
+            (result.data && result.data.message) ||
+              "If that address is registered, a reset link has been sent."
           );
         })
         .catch(function () {
@@ -367,7 +504,7 @@
     .then(parseJsonResponse)
     .then(function (result) {
       if (result.ok && result.data && result.data.ok) {
-        unlockLibrary(result.data.rootId, result.data.rootName);
+        unlockLibrary(result.data);
       }
     })
     .catch(function () {});

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css?v=24">
+<link rel="stylesheet" href="/css/styles.css?v=25">
 </head>
 <body>
 
@@ -283,25 +283,39 @@
 
 <section id="documents">
   <h2><span class="n">10</span><span class="t">Society documents</span><a class="up" href="#sections">Sections</a></h2>
-  <p>Society records are held in the Co-Owners Maintenance Society document folders. Residents may browse the published Society folders and view or save files from this website. No separate Infomaniak account is required.</p>
-  <p>Access is view and save only. Residents cannot edit, upload, delete, or change folder structure. Directors-only material (Digital Services &amp; Administration, bank statements, insurance claims, directors’ meetings, and similar) stays in Infomaniak and does not appear in this library.</p>
+  <p>Society records are held in the Co-Owners Maintenance Society document folders. Residents may browse the published Society folders and view or save files from this website using their registered email address.</p>
   <div class="callout">
-    <p><strong>Society documents (view / save only)</strong></p>
-    <p>Access is password-protected so casual visitors to this website cannot open Society files. Residents receive the password from the Directors (it is not published here). After signing in here, you stay on this website and can open the Society folders and the files within them.</p>
-    <form id="library-gate" class="library-gate" autocomplete="off">
-      <label for="library-password">Library password</label>
-      <div class="library-gate-row">
-        <input id="library-password" name="password" type="password" required autocomplete="current-password" />
-        <button type="submit">Open library</button>
-      </div>
+    <p>Sign in with the email address registered for your apartment. On first visit you will set your own password (at least 12 characters). After signing in you stay on this website and can open the Society folders and files available to your account.</p>
+    <div id="library-gate" class="library-gate">
+      <form id="library-email-form" autocomplete="username">
+        <label for="library-email">Email address</label>
+        <div class="library-gate-row">
+          <input id="library-email" name="email" type="email" required autocomplete="username" />
+          <button type="submit">Continue</button>
+        </div>
+      </form>
+      <form id="library-password-form" class="library-password-form" autocomplete="current-password" hidden>
+        <p id="library-password-hint" class="library-hint"></p>
+        <label for="library-password">Password</label>
+        <div class="library-gate-row">
+          <input id="library-password" name="password" type="password" required minlength="12" autocomplete="current-password" />
+          <button type="submit" id="library-password-submit">Sign in</button>
+        </div>
+        <p class="library-gate-links">
+          <button type="button" id="library-back-email" class="library-text-btn">Use a different email</button>
+          <button type="button" id="library-forgot" class="library-text-btn">Forgotten password</button>
+        </p>
+      </form>
       <p id="library-gate-msg" class="library-gate-msg" role="status" aria-live="polite" hidden></p>
-    </form>
+    </div>
     <div id="library-browser" class="library-browser" hidden>
       <div class="library-browser-bar">
         <nav id="library-crumbs" class="library-crumbs" aria-label="Library location"></nav>
         <div class="library-browser-actions">
+          <span id="library-user-label" class="library-user-label"></span>
+          <a id="library-log-link" class="library-nav-btn" href="/library-log" hidden>Access log</a>
           <button type="button" id="library-back" class="library-nav-btn" disabled>Back</button>
-          <button type="button" id="library-close" class="library-nav-btn">Close</button>
+          <button type="button" id="library-close" class="library-nav-btn">Sign out</button>
         </div>
       </div>
       <p id="library-browser-status" class="library-browser-status" role="status" aria-live="polite"></p>
@@ -339,6 +353,6 @@
 </main>
 </div>
 
-<script src="/js/main.js?v=7" defer></script>
+<script src="/js/main.js?v=8" defer></script>
 </body>
 </html>

@@ -1,0 +1,56 @@
+[
+  {
+    "email": "lorrainekeynes@hotmail.com",
+    "role": "director",
+    "apartment": 1,
+    "name": "Lorraine Keynes"
+  },
+  {
+    "email": "jaholtom@yahoo.co.uk",
+    "role": "director",
+    "apartment": 2,
+    "name": "Julian Holtom"
+  },
+  {
+    "email": "chris@links-lodge.co.uk",
+    "role": "resident",
+    "apartment": 3,
+    "name": "Powell"
+  },
+  {
+    "email": "pauljmoody4@gmail.com",
+    "role": "resident",
+    "apartment": 4,
+    "name": "Paul Moody"
+  },
+  {
+    "email": "rhanson@hansonib.com",
+    "role": "resident",
+    "apartment": 5,
+    "name": "Richard Hanson"
+  },
+  {
+    "email": "gw.ley@sky.com",
+    "role": "director",
+    "apartment": 6,
+    "name": "Graham Ley"
+  },
+  {
+    "email": "paul451@btinternet.com",
+    "role": "resident",
+    "apartment": 7,
+    "name": "Speddings"
+  },
+  {
+    "email": "paulgostridge@hotmail.com",
+    "role": "resident",
+    "apartment": 8,
+    "name": "Gostridge"
+  },
+  {
+    "email": "paulapynacker@gmail.com",
+    "role": "resident",
+    "apartment": 9,
+    "name": "Paula"
+  }
+]

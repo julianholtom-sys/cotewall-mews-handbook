@@ -6,3 +6,8 @@ node_modules/
 !.env.example
 
 _kdrive-seed/
+data/library.sqlite
+data/library.sqlite-*
+data/users-seed.json
+!data/users-seed.example.json
+

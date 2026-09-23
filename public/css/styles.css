@@ -331,6 +331,39 @@ strong{font-weight:600}
 }
 .library-gate button:hover{background:color-mix(in srgb, var(--teal) 88%, #000)}
 .library-gate-msg{margin:10px 0 0;color:var(--rust);font-size:.95rem}
+.library-hint{margin:0 0 10px;color:var(--slate);font-size:.95rem}
+.library-gate-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px 18px;
+  margin:12px 0 0;
+}
+.library-text-btn{
+  border:0;
+  background:none;
+  padding:0;
+  font:inherit;
+  color:var(--teal);
+  text-decoration:underline;
+  text-underline-offset:2px;
+  cursor:pointer;
+}
+.library-user-label{
+  font-size:.85rem;
+  color:var(--slate);
+  margin-right:4px;
+}
+.library-standalone{max-width:52rem;margin:2rem auto;padding:0 1.25rem 3rem}
+.library-standalone h1{
+  font-family:var(--display, Cinzel, serif);
+  font-weight:500;
+  font-size:1.75rem;
+  margin:0 0 0.75rem;
+}
+.library-log-filter{margin:0 0 1.25rem;align-items:center}
+.library-log-filter select,
+.library-log-filter label{font:inherit}
+.library-password-form{margin-top:4px}
 
 .library-browser{
   margin:16px 0 8px;

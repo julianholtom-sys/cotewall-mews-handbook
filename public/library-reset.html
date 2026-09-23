@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reset library password · Cotewall Mews</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css?v=25">
+</head>
+<body>
+<header class="mast">
+  <div class="mast-inner">
+    <a href="/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:1rem">
+      <img class="mast-logo" src="/img/cwm-logo.svg" width="72" height="72" alt="Cotewall Mews">
+      <div class="kicker">
+        <span class="kicker-brand">Cotewall Mews</span>
+        <h4 class="kicker-sub">Document library</h4>
+      </div>
+    </a>
+  </div>
+</header>
+<main class="doc">
+  <section class="callout library-standalone">
+    <h1>Reset library password</h1>
+    <p>Choose a new password of at least 12 characters. After saving, sign in again from the handbook.</p>
+    <form id="reset-form" class="library-gate" autocomplete="off">
+      <label for="reset-password">New password</label>
+      <div class="library-gate-row">
+        <input id="reset-password" name="password" type="password" required minlength="12" autocomplete="new-password">
+        <button type="submit">Save password</button>
+      </div>
+      <p id="reset-msg" class="library-gate-msg" role="status" aria-live="polite" hidden></p>
+    </form>
+    <p><a href="/#documents">Back to Society documents</a></p>
+  </section>
+</main>
+<script>
+(function () {
+  var params = new URLSearchParams(window.location.search);
+  var token = params.get("token") || "";
+  var form = document.getElementById("reset-form");
+  var msg = document.getElementById("reset-msg");
+  function show(text) {
+    msg.hidden = !text;
+    msg.textContent = text || "";
+  }
+  if (!token) {
+    show("This reset link is missing or incomplete. Request a new one from the handbook.");
+    form.hidden = true;
+    return;
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var password = document.getElementById("reset-password").value;
+    show("");
+    fetch("/api/library/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ token: token, password: password }),
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, data: data };
+        });
+      })
+      .then(function (result) {
+        if (result.ok && result.data && result.data.ok) {
+          show("Password updated. You can now sign in from Society documents.");
+          form.hidden = true;
+          return;
+        }
+        show((result.data && result.data.error) || "Could not update the password.");
+      })
+      .catch(function () {
+        show("Could not reach the server. Please try again.");
+      });
+  });
+})();
+</script>
+</body>
+</html>

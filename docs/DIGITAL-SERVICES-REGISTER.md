@@ -18,12 +18,14 @@
 | Field | Entry |
 |-------|--------|
 | Service | Web Hosting (Node.js) |
-| Purpose | Host Residents' Handbook |
+| Purpose | Host Residents' Handbook + per-resident document library |
 | Provider | Infomaniak |
 | Domain / name | cotewall-mews.ltd on Web Hosting 1 |
 | Renewal / expiry date | 20 September 2031 (Manager) |
 | Deploy | GitHub → Infomaniak Node.js (`npm install`, `npm start`, PORT) |
 | Repository | github.com/julianholtom-sys/cotewall-mews-handbook |
+| Library auth | SQLite users + access_log; bcrypt passwords; Infomaniak SMTP for resets |
+| Required host env | See docs/LIBRARY-AUTH.md (`KDRIVE_API_TOKEN`, `DATA_DIR`, `SMTP_*`, …) |
 | Admin access | Infomaniak hosting administrators |
 
 | Field | Entry |
@@ -34,6 +36,7 @@
 | Domain / name | kSuite for cotewall-mews.ltd |
 | Mailbox | directors@cotewall-mews.ltd (shared with directors) |
 | kDrive | Society document tree under CO-OWNERS MAINTENANCE SOCIETY |
+| Website access | Server-side API only — do not leave a public share on the Society root |
 | Renewal | Align with kSuite / prepaid term (confirm in Manager Accounting) |
 | Admin access | Legal Representative; director Administrators |
 
@@ -53,4 +56,4 @@
 
 ## Last reviewed
 
-22 September 2026 — initial register (no secrets).
+23 September 2026 — per-resident library auth (no secrets in this file).
