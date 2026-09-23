@@ -99,6 +99,14 @@ app.get("/library-reset", (_req, res) => {
   res.sendFile(path.join(publicDir, "library-reset.html"));
 });
 
+app.get("/api/library/health", (_req, res) => {
+  return res.json({
+    ok: true,
+    kdrive: Boolean(process.env.KDRIVE_API_TOKEN),
+    smtp: mail.smtpConfigured(),
+  });
+});
+
 app.get("/api/library/session", (req, res) => {
   const user = auth.getRequestUser(req);
   if (!user) {
