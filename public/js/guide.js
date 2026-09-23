@@ -340,6 +340,53 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** Labels for each choice taken, starting with the top-level option (e.g. Pests). */
+  function choicePathLabels() {
+    var labels = [];
+    for (var i = 0; i < history.length - 1; i++) {
+      var from = nodes[history[i]];
+      var toId = history[i + 1];
+      if (!from || !from.choices) continue;
+      for (var j = 0; j < from.choices.length; j++) {
+        if (from.choices[j].next === toId) {
+          labels.push(from.choices[j].label);
+          break;
+        }
+      }
+    }
+    return labels;
+  }
+
+  function mailSubjectFromPath() {
+    var labels = choicePathLabels();
+    if (!labels.length) return "Cotewall Mews enquiry";
+    return "Cotewall Mews: " + labels.join(" — ");
+  }
+
+  function mailtoHref(subject, body) {
+    return (
+      "mailto:directors@cotewall-mews.ltd?subject=" +
+      encodeURIComponent(subject) +
+      "&body=" +
+      encodeURIComponent(body)
+    );
+  }
+
+  function bindMailto(rootEl) {
+    rootEl.querySelectorAll("a[data-mailto]").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        var href = a.getAttribute("href");
+        if (!href || href.indexOf("mailto:") !== 0) return;
+        // Desktop browsers sometimes ignore the default action for
+        // dynamically inserted mailto links; assign explicitly.
+        e.preventDefault();
+        window.setTimeout(function () {
+          window.location.href = href;
+        }, 0);
+      });
+    });
+  }
+
   function render(id) {
     var node = nodes[id];
     if (!node) return;
@@ -381,17 +428,19 @@
           "</a>";
       }
       if (node.mail) {
-        var subject =
-          "Cotewall Mews: " + (node.mailSubject || node.question || "Enquiry");
+        var topicLabels = choicePathLabels();
+        var subject = mailSubjectFromPath();
+        var topicLine = topicLabels.length
+          ? topicLabels.join(" — ")
+          : "an enquiry";
         var body =
-          "Hello,\n\nI used the Quick guide on the residents' website about:\n" +
-          (node.mailSubject || node.question || "an enquiry") +
-          "\n\n(Please add apartment number and details below.)\n\n";
+          "Hello,\n\nI used the Quick guide on the residents' website.\n\nTopic: " +
+          topicLine +
+          "\n\nApartment number:\n\nDetails:\n\n";
+        var href = mailtoHref(subject, body);
         html +=
-          '<a class="secondary" href="mailto:directors@cotewall-mews.ltd?subject=' +
-          encodeURIComponent(subject) +
-          "&body=" +
-          encodeURIComponent(body) +
+          '<a class="secondary" data-mailto href="' +
+          esc(href) +
           '">Email the directors</a>';
       }
       html += "</div>";
@@ -450,6 +499,7 @@
     root.querySelectorAll('[data-action="restart"]').forEach(function (btn) {
       btn.addEventListener("click", restart);
     });
+    bindMailto(root);
   }
 
   history = ["start"];
