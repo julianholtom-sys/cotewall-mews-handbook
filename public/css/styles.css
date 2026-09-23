@@ -77,12 +77,14 @@ header.mast::after{display:none}
 }
 .mast .kicker-sub{
   display:block;
-  margin-top:.35em;
+  width:100%;
+  margin:.175em 0 0;
   font-family:var(--sans);
   font-weight:200;
   font-size:clamp(2rem,5.1vw,3.1rem);
   letter-spacing:.14em;
   line-height:1.15;
+  text-align:center;
   white-space:nowrap;
 }
 .mast h1{
