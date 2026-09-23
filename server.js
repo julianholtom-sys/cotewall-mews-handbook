@@ -35,6 +35,17 @@ const LIBRARY_SHARE_UUID =
 const LIBRARY_ROOT_ID = Number(process.env.RESIDENT_LIBRARY_ROOT_ID || 6);
 const LIBRARY_ROOT_NAME =
   process.env.RESIDENT_LIBRARY_ROOT_NAME || "Society documents";
+/** Directors-only: Digital Services & Administration (default folder id 14). */
+const LIBRARY_EXCLUDED_IDS = new Set(
+  String(process.env.RESIDENT_LIBRARY_EXCLUDED_IDS || "14")
+    .split(",")
+    .map(function (part) {
+      return Number(String(part).trim());
+    })
+    .filter(function (id) {
+      return Number.isInteger(id) && id > 0;
+    })
+);
 const SESSION_COOKIE = "cw_library";
 const SESSION_TTL_MS = 4 * 60 * 60 * 1000;
 
@@ -180,6 +191,45 @@ function isPlaceholder(name) {
   return name === ".keep" || name === ".DS_Store" || name === "Thumbs.db";
 }
 
+function normalizeFolderLabel(name) {
+  return String(name || "")
+    .toUpperCase()
+    .replace(/[\u2013\u2014]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isDirectorsOnlyName(name) {
+  const label = normalizeFolderLabel(name);
+  return (
+    label.includes("DIGITAL SERVICES") && label.includes("ADMINISTRATION")
+  );
+}
+
+function isExcludedLibraryItem(item) {
+  if (!item || !item.id) return true;
+  if (LIBRARY_EXCLUDED_IDS.has(Number(item.id))) return true;
+  if (item.type === "dir" && isDirectorsOnlyName(item.name)) return true;
+  return false;
+}
+
+async function isDirectorsOnlyPath(fileId) {
+  if (LIBRARY_EXCLUDED_IDS.has(fileId)) return true;
+  const metaRes = await shareFetch(`/files/${fileId}?with=path,parents`);
+  if (!metaRes.ok) return true;
+  const meta = await metaRes.json();
+  const data = meta.data || {};
+  if (isDirectorsOnlyName(data.name)) return true;
+  if (isDirectorsOnlyName(data.path)) return true;
+  const parents = Array.isArray(data.parents) ? data.parents : [];
+  for (const parent of parents) {
+    if (!parent) continue;
+    if (LIBRARY_EXCLUDED_IDS.has(Number(parent.id))) return true;
+    if (isDirectorsOnlyName(parent.name)) return true;
+  }
+  return false;
+}
+
 app.use(express.json({ limit: "4kb" }));
 app.use(express.urlencoded({ extended: false, limit: "4kb" }));
 app.use(express.static(publicDir, { extensions: ["html"] }));
@@ -232,6 +282,15 @@ app.post("/api/library/logout", (req, res) => {
 app.get("/api/library/browse", requireLibrarySession, async (req, res) => {
   const folderId = parseFileId(req.query.id) || LIBRARY_ROOT_ID;
   try {
+    if (
+      folderId !== LIBRARY_ROOT_ID &&
+      (await isDirectorsOnlyPath(folderId))
+    ) {
+      return res
+        .status(404)
+        .json({ error: "Folder not found in the Residents library." });
+    }
+
     const listRes = await shareFetch(
       `/files/${folderId}/files?with=capabilities`
     );
@@ -244,7 +303,13 @@ app.get("/api/library/browse", requireLibrarySession, async (req, res) => {
     const payload = await listRes.json();
     const items = Array.isArray(payload.data) ? payload.data : [];
     const mapped = items
-      .filter((item) => item && item.name && !isPlaceholder(item.name))
+      .filter(
+        (item) =>
+          item &&
+          item.name &&
+          !isPlaceholder(item.name) &&
+          !isExcludedLibraryItem(item)
+      )
       .map(mapItem)
       .sort(function (a, b) {
         if (a.type !== b.type) return a.type === "dir" ? -1 : 1;
@@ -278,6 +343,12 @@ app.get("/api/library/download/:id", requireLibrarySession, async (req, res) => 
     return res.status(400).json({ error: "Invalid file." });
   }
   try {
+    if (await isDirectorsOnlyPath(fileId)) {
+      return res
+        .status(404)
+        .json({ error: "File not found in the Residents library." });
+    }
+
     const metaRes = await shareFetch(`/files/${fileId}`);
     if (!metaRes.ok) {
       return res.status(404).json({ error: "File not found in the Residents library." });
