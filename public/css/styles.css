@@ -80,7 +80,6 @@ header.mast::after{display:none}
   margin-top:.35em;
   font-family:var(--sans);
   font-weight:700;
-  /* ~80% of Cotewall Mews line width (longer phrase → slightly smaller type + tracking) */
   font-size:clamp(2rem,5.1vw,3.1rem);
   letter-spacing:.14em;
   line-height:1.15;

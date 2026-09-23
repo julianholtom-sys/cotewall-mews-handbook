@@ -24,6 +24,25 @@
   syncRailOffset();
   window.addEventListener("resize", syncRailOffset);
 
+  function fitKickerSub() {
+    var brand = document.querySelector(".mast .kicker-brand");
+    var sub = document.querySelector(".mast .kicker-sub");
+    if (!brand || !sub) return;
+    sub.style.fontSize = "";
+    var target = brand.getBoundingClientRect().width * 0.8;
+    if (target < 40) return;
+    var size = parseFloat(window.getComputedStyle(sub).fontSize) || 24;
+    var width = sub.getBoundingClientRect().width;
+    if (width < 1) return;
+    size = Math.max(14, Math.min(size * (target / width), 64));
+    sub.style.fontSize = size.toFixed(2) + "px";
+  }
+  fitKickerSub();
+  window.addEventListener("resize", fitKickerSub);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitKickerSub).catch(function () {});
+  }
+
   var links = Array.prototype.slice.call(
     document.querySelectorAll("nav.rail a")
   );
