@@ -86,6 +86,7 @@ header.mast::after{display:none}
   line-height:1;
   letter-spacing:.04em;
   white-space:nowrap;
+  color:var(--bone);
 }
 .mast .kicker-sub{
   display:block;
