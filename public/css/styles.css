@@ -17,9 +17,9 @@
   --ease:cubic-bezier(.22,1,.36,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:24px}
+html{scroll-behavior:smooth;scroll-padding-top:var(--rail-offset,24px)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-main section{scroll-margin-top:24px}
+main section{scroll-margin-top:var(--rail-offset,24px)}
 body{
   background:
     radial-gradient(1200px 500px at 10% -10%, rgba(79,114,130,.08), transparent 55%),
@@ -520,11 +520,11 @@ footer.doc{
 
 /* ---------- responsive ---------- */
 @media (max-width:860px){
-  html{scroll-padding-top:7.25rem}
-  main section{scroll-margin-top:7.25rem}
+  html{scroll-padding-top:var(--rail-offset,3.75rem)}
+  main section{scroll-margin-top:var(--rail-offset,3.75rem)}
   .wrap{grid-template-columns:1fr;gap:0}
   nav.rail{
-    padding:16px 0 0;
+    padding:10px 0 0;
     position:-webkit-sticky;
     position:sticky;
     top:0;
@@ -535,7 +535,7 @@ footer.doc{
   }
   nav.rail .rail-sticky{position:static}
   nav.rail .rail-label{display:none}
-  nav.rail ol{display:flex;flex-wrap:wrap;gap:2px 3px;padding-bottom:10px}
+  nav.rail ol{display:flex;flex-wrap:wrap;gap:2px 3px;padding-bottom:8px}
   nav.rail a{
     border-left:none;
     border-bottom:3px solid transparent;
@@ -548,7 +548,7 @@ footer.doc{
   nav.rail a .n{min-width:1.45em}
   nav.rail a.on{border-bottom-color:var(--teal);background:transparent}
   nav.rail a .t{display:none}
-  main{padding-top:36px}
+  main{padding-top:28px}
   .pair{grid-template-columns:1fr}
 }
 @media (max-width:640px){

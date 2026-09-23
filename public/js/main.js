@@ -2,15 +2,27 @@
   var reduce =
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var mobileMq =
+    window.matchMedia && window.matchMedia("(max-width: 860px)");
+  var rail = document.querySelector("nav.rail");
 
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
-    var el = document.getElementById(a.getAttribute("href").slice(1));
-    if (!el) return;
-    e.preventDefault();
-    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-  });
+  function railOffset() {
+    if (!rail) return 24;
+    if (mobileMq && mobileMq.matches) {
+      return Math.ceil(rail.getBoundingClientRect().height);
+    }
+    return 24;
+  }
+
+  function syncRailOffset() {
+    document.documentElement.style.setProperty(
+      "--rail-offset",
+      railOffset() + "px"
+    );
+  }
+
+  syncRailOffset();
+  window.addEventListener("resize", syncRailOffset);
 
   var links = Array.prototype.slice.call(
     document.querySelectorAll("nav.rail a")
@@ -37,53 +49,64 @@
     document.querySelectorAll("main section")
   );
 
-  if ("IntersectionObserver" in window) {
-    var visible = {};
-    var navIo = new IntersectionObserver(
+  function updateActiveFromScroll() {
+    var mobile = mobileMq && mobileMq.matches;
+    var line = mobile
+      ? railOffset() + 12
+      : Math.max(80, Math.round(window.innerHeight * 0.28));
+    var active = sections.length ? sections[0].id : null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= line) {
+        active = sections[i].id;
+      }
+    }
+    if (active) setOn(active);
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    var el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    syncRailOffset();
+    if (map[id]) setOn(id);
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  });
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      updateActiveFromScroll();
+    });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  updateActiveFromScroll();
+
+  if ("IntersectionObserver" in window && !reduce) {
+    var revealIo = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (e) {
-          visible[e.target.id] = e.isIntersecting;
-        });
-        for (var i = 0; i < sections.length; i++) {
-          if (visible[sections[i].id]) {
-            setOn(sections[i].id);
-            break;
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            revealIo.unobserve(e.target);
           }
-        }
+        });
       },
-      { rootMargin: "-20% 0px -60% 0px" }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
     );
     sections.forEach(function (s) {
-      navIo.observe(s);
+      revealIo.observe(s);
     });
-
-    if (!reduce) {
-      var revealIo = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) {
-              e.target.classList.add("in");
-              revealIo.unobserve(e.target);
-            }
-          });
-        },
-        { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
-      );
-      sections.forEach(function (s) {
-        revealIo.observe(s);
-      });
-    } else {
-      sections.forEach(function (s) {
-        s.classList.add("in");
-      });
-    }
   } else {
     sections.forEach(function (s) {
       s.classList.add("in");
     });
   }
-
-  setOn("scope");
 
   var libraryForm = document.getElementById("library-gate");
   var libraryBrowser = document.getElementById("library-browser");
@@ -140,10 +163,10 @@
         libraryCrumbs.appendChild(sep);
       }
       if (index === libraryTrail.length - 1) {
-        var current = document.createElement("span");
-        current.className = "library-crumb-current";
-        current.textContent = crumb.name;
-        libraryCrumbs.appendChild(current);
+        var currentCrumb = document.createElement("span");
+        currentCrumb.className = "library-crumb-current";
+        currentCrumb.textContent = crumb.name;
+        libraryCrumbs.appendChild(currentCrumb);
       } else {
         var btn = document.createElement("button");
         btn.type = "button";
