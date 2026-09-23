@@ -637,25 +637,39 @@ footer.doc{
 .guide-nav{
   display:flex;
   flex-wrap:wrap;
-  gap:12px 18px;
+  gap:12px;
   align-items:center;
-  margin-top:22px;
+  margin-top:24px;
+  padding-top:18px;
+  border-top:1px solid var(--line);
 }
 .guide-back,
 .guide-restart{
   font-family:var(--sans);
-  font-size:.9rem;
+  font-size:.95rem;
   font-weight:600;
-  color:var(--slate);
-  background:none;
-  border:none;
-  padding:0;
+  color:var(--ink);
+  background:#fff;
+  border:2px solid color-mix(in srgb, var(--slate) 35%, transparent);
+  padding:12px 18px;
   cursor:pointer;
-  text-decoration:underline;
-  text-underline-offset:3px;
+  text-decoration:none;
+  transition:border-color .2s ease, background .2s ease, color .2s ease;
 }
 .guide-back:hover,
-.guide-restart:hover{color:var(--ink)}
+.guide-restart:hover{
+  border-color:var(--brand);
+  background:var(--tint);
+  color:var(--ink);
+}
+.guide-restart{
+  border-color:var(--brand);
+  color:var(--brand);
+}
+.guide-restart:hover{
+  background:var(--brand);
+  color:#fff;
+}
 .guide-back:focus-visible,
 .guide-restart:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 .guide-result .guide-question{margin-bottom:16px}
