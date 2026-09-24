@@ -24,7 +24,8 @@
 | Renewal / expiry date | 20 September 2031 (Manager) |
 | Deploy | GitHub → Infomaniak Node.js (`npm install`, `npm start`, PORT) |
 | Repository | github.com/julianholtom-sys/cotewall-mews-handbook |
-| Library auth | SQLite users + access_log; bcrypt passwords; Infomaniak SMTP for resets |
+| Library auth | Per-resident email sign-in; SQLite users + access_log; bcrypt; Infomaniak SMTP for resets |
+| Persistent data | `DATA_DIR=/srv/customer/library-data` (library.sqlite survives git rebuilds) |
 | Required host env | See docs/LIBRARY-AUTH.md (`KDRIVE_API_TOKEN`, `DATA_DIR`, `SMTP_*`, …) |
 | Admin access | Infomaniak hosting administrators |
 
@@ -56,4 +57,4 @@
 
 ## Last reviewed
 
-23 September 2026 — per-resident library auth (no secrets in this file).
+24 September 2026 — per-resident library auth; DATA_DIR + SMTP device documented (no secrets in this file).

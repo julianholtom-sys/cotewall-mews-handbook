@@ -134,13 +134,16 @@ and the Digital Services Register in the same area.
 
 ## 12. How the website links to kDrive
 
-The handbook at https://cotewall-mews.ltd/ includes **Society documents** (§10).  
-Residents and directors sign in with their **registered email** (first visit sets a personal password). The Node app lists and streams files from kDrive using a **server-side API token** — there must be **no public kDrive share link** on the Society root.
+The handbook at https://cotewall-mews.ltd/ includes **Society documents**.  
+There is **no shared library password**. Each resident and director signs in with their **registered apartment / personal email**; on first visit they set a personal password (12+ characters). Forgotten-password emails are sent from `directors@cotewall-mews.ltd`.
+
+The Node app lists and streams files from kDrive using a **server-side API token** (`cotewall-library`). There must be **no public kDrive share link** on the Society root.
 
 - Directors see the full tree (including bank statements and folder 08).  
 - Residents do not see bank statements or Digital Services & Administration.  
-- Directors can open the access log at `/library-log`.  
-- Ops details (env vars, seed users, SMTP, revoke share): see `docs/LIBRARY-AUTH.md`.
+- Directors can open the access log at `/library-log` (directors only).  
+- Library SQLite lives in `DATA_DIR=/srv/customer/library-data` so passwords and the log survive Infomaniak git rebuilds.  
+- Ops details (env vars, seed users, SMTP device `cotewall-website`, revoke share): see `docs/LIBRARY-AUTH.md`.
 
 Source code / deploy: GitHub repository connected to Infomaniak Node.js hosting (`npm install` / `npm start`).
 

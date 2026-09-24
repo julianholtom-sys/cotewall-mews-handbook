@@ -11,15 +11,17 @@ Set these on the Node.js host (and locally in `.env`):
 | `RESIDENT_LIBRARY_ROOT_ID` | Society root folder id (default `6`) |
 | `RESIDENT_LIBRARY_ROOT_NAME` | Display name (default `Society documents`) |
 | `RESIDENT_LIBRARY_EXCLUDED_IDS` | Comma-separated folder ids hidden from residents |
-| `DATA_DIR` | Directory for `library.sqlite` and `users-seed.json` (must persist across git rebuilds) |
+| `DATA_DIR` | Directory for `library.sqlite` and `users-seed.json` (must persist across git rebuilds). Live Infomaniak value: `/srv/customer/library-data` |
 | `APP_BASE_URL` | Public site URL for reset links (default `https://cotewall-mews.ltd`) |
 | `SMTP_HOST` | Default `mail.infomaniak.com` |
 | `SMTP_PORT` | Default `587` |
 | `SMTP_USER` | Mailbox login, e.g. `directors@cotewall-mews.ltd` |
-| `SMTP_PASS` | Mailbox password |
+| `SMTP_PASS` | Infomaniak **mail device password** for the website SMTP (not a director’s personal Infomaniak login). Name the device `cotewall-website` |
 | `SMTP_FROM` | Optional From header (defaults to `SMTP_USER`) |
 
 The old shared `RESIDENT_LIBRARY_PASSWORD` and public `RESIDENT_LIBRARY_SHARE_UUID` are no longer used.
+
+Keep a single long-lived API token named `cotewall-library` (Drive read scopes) for the website. Revoke any temporary seeding / Mail API tokens.
 
 ## Seed users
 
@@ -30,11 +32,11 @@ The old shared `RESIDENT_LIBRARY_PASSWORD` and public `RESIDENT_LIBRARY_SHARE_UU
 
 ## Go-live checklist
 
-1. Create a long-lived Infomaniak API token with Drive read access; set `KDRIVE_API_TOKEN`.
-2. Set SMTP vars for `directors@cotewall-mews.ltd`.
-3. Point `DATA_DIR` at a path that survives Infomaniak git rebuilds.
-4. **Revoke** the public kDrive share on the Society root (`60945e17-1111-4f92-90c3-185f6ff51d5c`) so only `/api/library/file` can deliver files.
-5. Rebuild / restart Node; smoke-test director login, resident login, hidden folders, reset email, and `/library-log`.
+1. Create a long-lived Infomaniak API token named `cotewall-library` with Drive read access; set `KDRIVE_API_TOKEN`.
+2. Create a mail device password on `directors@cotewall-mews.ltd` named `cotewall-website`; set SMTP vars.
+3. Point `DATA_DIR` at `/srv/customer/library-data` on Infomaniak (outside the git checkout).
+4. Ensure there is **no** public kDrive share on the Society root — only `/api/library/file` may deliver files.
+5. Rebuild / restart Node; confirm `/api/library/health` reports `kdrive`, `smtp`, and `dataDir`; smoke-test director login, resident login, hidden folders, reset email, and `/library-log`.
 
 ## Directors tools
 
