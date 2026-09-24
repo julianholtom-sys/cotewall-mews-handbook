@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Digital Services Register — Cotewall Mews</title>
+<link rel="stylesheet" href="_doc.css">
+</head>
+<body>
+<header class="cover">
+  <p class="eyebrow">Cotewall Mews · Co-Owners Maintenance Society</p>
+  <h1>Digital Services Register</h1>
+  <p class="meta">Inventory of Society digital services · No secrets in this document</p>
+</header>
+
+<p class="warn"><strong>Do not record</strong> passwords, MFA codes, recovery codes, API keys, or payment card / PayPal credentials in this file.</p>
+
+<div class="card">
+  <h3>Domain</h3>
+  <table>
+    <tbody>
+      <tr><th>Purpose</th><td>Society website and email domain</td></tr>
+      <tr><th>Provider</th><td>Infomaniak Network SA</td></tr>
+      <tr><th>Domain</th><td>cotewall-mews.ltd</td></tr>
+      <tr><th>Renewal / expiry</th><td>21 September 2031 (RDAP) · multi-year prepaid from Sep 2026</td></tr>
+      <tr><th>Society owner / role</th><td>Infomaniak Organisation — Legal Representative</td></tr>
+      <tr><th>Admin access</th><td>Legal Representative; Administrators as appointed</td></tr>
+      <tr><th>Billing</th><td>Infomaniak Manager → Organisation → Accounting</td></tr>
+      <tr><th>Credentials</th><td>Individual Infomaniak logins + directors’ password manager / recovery vault (not in kDrive)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Web Hosting (Node.js)</h3>
+  <table>
+    <tbody>
+      <tr><th>Purpose</th><td>Residents’ Handbook + per-resident document library</td></tr>
+      <tr><th>Provider</th><td>Infomaniak</td></tr>
+      <tr><th>Site</th><td>cotewall-mews.ltd on Web Hosting 1</td></tr>
+      <tr><th>Renewal / expiry</th><td>20 September 2031 (Manager)</td></tr>
+      <tr><th>Deploy</th><td>GitHub → Infomaniak Node.js (<code>npm install</code>, <code>npm start</code>)</td></tr>
+      <tr><th>Repository</th><td>github.com/julianholtom-sys/cotewall-mews-handbook</td></tr>
+      <tr><th>Library auth</th><td>Per-resident email sign-in; SQLite users + access log; Infomaniak SMTP for resets</td></tr>
+      <tr><th>Persistent data</th><td><code>DATA_DIR=/srv/customer/library-data</code></td></tr>
+      <tr><th>Admin access</th><td>Infomaniak hosting administrators</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>kSuite Essential (Mail + kDrive)</h3>
+  <table>
+    <tbody>
+      <tr><th>Purpose</th><td>directors@ mailbox; document repository</td></tr>
+      <tr><th>Provider</th><td>Infomaniak</td></tr>
+      <tr><th>Mailbox</th><td>directors@cotewall-mews.ltd (shared with directors)</td></tr>
+      <tr><th>kDrive</th><td>Society document tree under CO-OWNERS MAINTENANCE SOCIETY</td></tr>
+      <tr><th>Website access</th><td>Server-side API only — no public share on the Society root</td></tr>
+      <tr><th>Renewal</th><td>Align with kSuite / prepaid term (confirm in Manager Accounting)</td></tr>
+      <tr><th>Admin access</th><td>Legal Representative; director Administrators</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>SSL certificate</h3>
+  <table>
+    <tbody>
+      <tr><th>Purpose</th><td>HTTPS for website</td></tr>
+      <tr><th>Provider</th><td>Infomaniak (managed with hosting)</td></tr>
+      <tr><th>Domain</th><td>cotewall-mews.ltd</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Payment arrangement (status)</h2>
+<ul>
+  <li>Current arrangement (as directed by Society): prepaid multi-year term using a director’s personal PayPal account.</li>
+  <li><strong>Long-term requirement:</strong> move renewals to a Society-controlled payment method (Society bank debit/credit card) well before September 2031.</li>
+  <li>Do <strong>not</strong> change the live payment method without Society approval.</li>
+  <li>Prefer multiple directors receive Infomaniak billing / renewal notifications.</li>
+</ul>
+
+<p class="footer">Last reviewed: 24 September 2026 — per-resident library auth; DATA_DIR and SMTP device documented (no secrets).</p>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Director Handover Guide — Cotewall Mews</title>
+<link rel="stylesheet" href="_doc.css">
+</head>
+<body>
+<header class="cover">
+  <p class="eyebrow">Cotewall Mews · Co-Owners Maintenance Society</p>
+  <h1>Director Handover Guide</h1>
+  <p class="meta">Domain <strong>cotewall-mews.ltd</strong> · Directors email <strong>directors@cotewall-mews.ltd</strong></p>
+</header>
+
+<p class="warn"><strong>Security:</strong> Never store passwords, MFA seeds, recovery codes, API tokens, or payment card / PayPal details in this guide, in Git, on the website, or in ordinary kDrive folders.</p>
+
+<p>This guide is for a future director with little technical knowledge. It explains how the Society’s digital administration works and how to hand it on cleanly.</p>
+
+<h2><span class="num">1</span> What Infomaniak services the Society uses</h2>
+<table>
+  <thead><tr><th>Service</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td>Domain cotewall-mews.ltd</td><td>Society web address and email domain</td></tr>
+    <tr><td>Web Hosting (Node.js)</td><td>Hosts the Residents’ Handbook website</td></tr>
+    <tr><td>kSuite Essential</td><td>Mail, kDrive and collaboration for the organisation</td></tr>
+    <tr><td>Email</td><td>Permanent Society mailbox directors@cotewall-mews.ltd</td></tr>
+    <tr><td>kDrive</td><td>Shared document repository</td></tr>
+    <tr><td>SSL</td><td>HTTPS for the website</td></tr>
+  </tbody>
+</table>
+<p>Provider: Infomaniak (Swiss). Management console: <a href="https://manager.infomaniak.com">manager.infomaniak.com</a></p>
+
+<h2><span class="num">2</span> The domain</h2>
+<p>Production domain: <strong>cotewall-mews.ltd</strong><br>
+Website: <a href="https://cotewall-mews.ltd/">https://cotewall-mews.ltd/</a></p>
+<p>Do not point this domain elsewhere without Society agreement.</p>
+
+<h2><span class="num">3</span> The directors’ email</h2>
+<p>Permanent public address: <strong>directors@cotewall-mews.ltd</strong></p>
+<p>Use this for routine Society correspondence. It is the authoritative record of resident–director email. Do <strong>not</strong> auto-forward all Society mail to personal inboxes as the default arrangement.</p>
+
+<h2><span class="num">4</span> How directors gain access to the mailbox</h2>
+<ol>
+  <li>Each director should have their <strong>own</strong> Infomaniak login (named user).</li>
+  <li>Access to directors@ is granted by <strong>sharing</strong> that mailbox with their Infomaniak user (no shared password).</li>
+  <li>Open Infomaniak Mail (<a href="https://mail.infomaniak.com">mail.infomaniak.com</a> or kSuite Mail).</li>
+  <li>Switch address (chevron top-left) to directors@cotewall-mews.ltd when working as the Society.</li>
+  <li>Send from directors@ so replies stay on the Society record.</li>
+</ol>
+<p>If invited as an external user, accept the Infomaniak invitation email first, then the shared mailbox appears.</p>
+
+<h2><span class="num">5</span> How the kDrive structure works</h2>
+<p>Root folder: <strong>CO-OWNERS MAINTENANCE SOCIETY</strong></p>
+<ol>
+  <li>Governing Documents</li>
+  <li>Accounts &amp; Finance (by year; bank statements split Directors-original vs Residents-published)</li>
+  <li>Running Costs (by year)</li>
+  <li>Meetings (AGM / other residents / directors)</li>
+  <li>Companies House &amp; Statutory Records</li>
+  <li>Property &amp; Maintenance</li>
+  <li>Insurance (by year)</li>
+  <li>Digital Services &amp; Administration (registers, handover, renewals)</li>
+</ol>
+<p>Historical bulk scanning of old paper archives is <strong>not</strong> required. Focus on the present directors’ tenure; add older material only when important or already digital.</p>
+
+<h2><span class="num">6</span> Which material residents can see</h2>
+<p>Residents sign in on the website with their registered apartment email and get <strong>read-only</strong> access to the Society document library (published accounts, AGM papers, insurance schedules, and other agreed transparency documents).</p>
+<p>Residents must <strong>not</strong> edit, delete, upload into official folders, or change permissions.</p>
+<p>Directors-only material (unredacted bank statements, claims with personal data, directors’ meeting notes, Digital Services &amp; Administration) is hidden from resident accounts automatically. There must be <strong>no public kDrive share</strong> on the Society root.</p>
+
+<h2><span class="num">7</span> How to add a new director</h2>
+<ol>
+  <li>Invite them as an Infomaniak Organisation user (Administrator or User with required product rights).</li>
+  <li>Enable MFA on their account.</li>
+  <li>Share directors@cotewall-mews.ltd with them.</li>
+  <li>Grant appropriate kDrive write/manage access to Society folders.</li>
+  <li>Enable billing/renewal notification preferences if they should receive Infomaniak service alerts.</li>
+  <li>Update the website emergency contacts table if phone/email change.</li>
+  <li>Update Companies House / Society records as required by law (separate from Infomaniak).</li>
+</ol>
+
+<h2><span class="num">8</span> How to remove an outgoing director</h2>
+<ol>
+  <li>Remove their access to directors@ (Shared with).</li>
+  <li>Revoke kDrive permissions.</li>
+  <li>Remove or downgrade their Infomaniak Organisation / kSuite role.</li>
+  <li>Remove pending invitations if any.</li>
+  <li>Update website emergency contacts.</li>
+  <li>Confirm they no longer receive billing/admin notifications unless still appropriate.</li>
+  <li>Do <strong>not</strong> ask for their password — revoke access instead.</li>
+</ol>
+
+<h2><span class="num">9</span> Who controls the organisation-level account</h2>
+<p>Infomaniak provides a <strong>Legal Representative</strong> role with highest authority (products, users, accounting, recovery).</p>
+<p>As of the initial setup, the Legal Representative was the Infomaniak account used to create the organisation.</p>
+<p>The Legal Representative should remain a Society-controlled designation, not a permanent personal entitlement of one director. When that person leaves, transfer Legal Representative status using Infomaniak’s official process <strong>before</strong> removing their access.</p>
+
+<h2><span class="num">10</span> How renewals work</h2>
+<p>Domain, hosting, and kSuite were prepaid for a multi-year term (around five years from September 2026, with renewals around September 2031).</p>
+<p>Infomaniak can send renewal and invoice reminders to users who are allowed to receive billing communications. Prefer <strong>multiple directors</strong> receiving those alerts so the Society does not depend on one person checking the Directors mailbox.</p>
+
+<h2><span class="num">11</span> Where renewal dates are recorded</h2>
+<p>See kDrive: <em>08 – Digital Services &amp; Administration / Renewal Information</em> and the Digital Services Register in the same area.</p>
+
+<h2><span class="num">12</span> How the website links to kDrive</h2>
+<p>The handbook at <a href="https://cotewall-mews.ltd/handbook">cotewall-mews.ltd/handbook</a> includes <strong>Society documents</strong>. There is no shared library password. Each resident and director signs in with their registered email; on first visit they set a personal password (12+ characters). Forgotten-password emails are sent from directors@cotewall-mews.ltd.</p>
+<p>The Node app lists and streams files from kDrive using a server-side API token (<code>cotewall-library</code>). There must be no public kDrive share link on the Society root.</p>
+<ul>
+  <li>Directors see the full tree (including bank statements and folder 08).</li>
+  <li>Residents do not see bank statements or Digital Services &amp; Administration.</li>
+  <li>Directors can open the access log at <code>/library-log</code> (directors only).</li>
+  <li>Library data lives in a persistent host directory so passwords and the log survive git rebuilds.</li>
+</ul>
+<p>Source code / deploy: GitHub repository connected to Infomaniak Node.js hosting (<code>npm install</code> / <code>npm start</code>).</p>
+
+<h2><span class="num">13</span> How to update emergency contact details</h2>
+<ol>
+  <li>Edit <code>public/index.html</code> in the website repository (Contacts section).</li>
+  <li>Commit and push to the connected GitHub branch.</li>
+  <li>Rebuild/restart the Node.js site in Infomaniak if auto-deploy does not run.</li>
+  <li>Spot-check the live Contacts section.</li>
+</ol>
+
+<h2><span class="num">14</span> How to update the normal Directors contact information</h2>
+<p>The permanent Society address is always <strong>directors@cotewall-mews.ltd</strong>. If that address ever must change (rare), update the mailbox / aliases in Infomaniak Mail, the website mailto links, and any letterheads / AGM notices.</p>
+<p>Do not replace it with a personal email as the public Society address.</p>
+
+<h2><span class="num">15</span> Credentials are not stored in the document repository</h2>
+<p>Use a proper password manager / Infomaniak account recovery / MFA recovery codes stored offline or in a dedicated secure vault agreed by the directors.</p>
+<p>This guide must never contain passwords, MFA seeds or recovery codes, PayPal / card numbers, or API tokens.</p>
+
+<h2><span class="num">16</span> Transferring control when the principal account owner changes</h2>
+<ol>
+  <li>Ensure at least two administrators understand the process.</li>
+  <li>Appoint the incoming Legal Representative in Infomaniak <strong>before</strong> the outgoing person loses access.</li>
+  <li>Transfer billing notification rights.</li>
+  <li>Confirm payment method is still valid (ideally a Society card, not a personal PayPal long-term).</li>
+  <li>Re-verify MFA and recovery options for remaining privileged users.</li>
+  <li>Revoke the outgoing director’s access only after the above succeed.</li>
+  <li>Record the change date in the Digital Services Register (no secrets).</li>
+</ol>
+
+<p class="footer">Prepared for Cotewall Mews Co-Owners Maintenance Society. Review and update when directors or services change. · September 2026</p>
+</body>
+</html>
