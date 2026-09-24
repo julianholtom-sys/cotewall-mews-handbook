@@ -41,7 +41,7 @@ const FAIL_LIMIT = 8;
 const FAIL_WINDOW_MS = 15 * 60 * 1000;
 
 const GENERIC_LOGIN_REJECT =
-  "That email is not registered for the document library.";
+  "That email is not registered for the document library. Use the address the Directors hold for your apartment. If you are unsure, write to directors@cotewall-mews.ltd.";
 const GENERIC_FORGOT_MSG =
   "If that address is registered, a reset link has been sent.";
 
@@ -85,9 +85,12 @@ function sessionPayload(user) {
 
 app.use(express.json({ limit: "8kb" }));
 app.use(express.urlencoded({ extended: false, limit: "8kb" }));
-app.use(express.static(publicDir, { extensions: ["html"] }));
 
 app.get("/", (_req, res) => {
+  res.sendFile(path.join(publicDir, "guide.html"));
+});
+
+app.get("/handbook", (_req, res) => {
   res.sendFile(path.join(publicDir, "index.html"));
 });
 
@@ -98,6 +101,8 @@ app.get("/library-log", (_req, res) => {
 app.get("/library-reset", (_req, res) => {
   res.sendFile(path.join(publicDir, "library-reset.html"));
 });
+
+app.use(express.static(publicDir, { index: false, extensions: ["html"] }));
 
 app.get("/api/library/health", (_req, res) => {
   return res.json({
@@ -471,7 +476,7 @@ app.post(
 );
 
 app.use((_req, res) => {
-  res.status(404).sendFile(path.join(publicDir, "index.html"));
+  res.status(404).sendFile(path.join(publicDir, "guide.html"));
 });
 
 app.listen(PORT, () => {

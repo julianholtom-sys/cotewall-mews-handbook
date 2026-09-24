@@ -367,7 +367,7 @@
       });
   }
 
-  function unlockLibrary(payload) {
+  function unlockLibrary(payload, opts) {
     showLibraryMsg("");
     showBrowser();
     libraryTrail = [];
@@ -382,6 +382,18 @@
       payload.rootName || "Society documents",
       0
     );
+    var forceScroll = opts && opts.scrollToDocuments;
+    var hash = (location.hash || "").toLowerCase();
+    if (forceScroll || hash === "#documents") {
+      window.requestAnimationFrame(function () {
+        var docs = document.getElementById("documents");
+        if (!docs) return;
+        docs.scrollIntoView({
+          behavior: reduce ? "auto" : "smooth",
+          block: "start",
+        });
+      });
+    }
   }
 
   if (libraryEmailForm) {
@@ -435,7 +447,7 @@
         .then(function (result) {
           if (result.ok && result.data && result.data.ok) {
             if (libraryPasswordInput) libraryPasswordInput.value = "";
-            unlockLibrary(result.data);
+            unlockLibrary(result.data, { scrollToDocuments: true });
             return;
           }
           showLibraryMsg(
@@ -484,6 +496,16 @@
         .catch(function () {
           showLibraryMsg("Could not reach the server. Please try again.");
         });
+    });
+  }
+
+  var passwordToggle = document.getElementById("library-password-toggle");
+  if (passwordToggle && libraryPasswordInput) {
+    passwordToggle.addEventListener("click", function () {
+      var show = libraryPasswordInput.type === "password";
+      libraryPasswordInput.type = show ? "text" : "password";
+      passwordToggle.textContent = show ? "Hide" : "Show";
+      passwordToggle.setAttribute("aria-pressed", show ? "true" : "false");
     });
   }
 

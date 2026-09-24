@@ -7,10 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css?v=25">
+<link rel="stylesheet" href="/css/styles.css?v=26">
 </head>
 <body>
-<header class="mast">
+<header class="mast mast-compact">
   <div class="mast-inner">
     <a href="/" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:1rem">
       <img class="mast-logo" src="/img/cwm-logo.svg" width="72" height="72" alt="Cotewall Mews">
@@ -28,12 +28,15 @@
     <form id="reset-form" class="library-gate" autocomplete="off">
       <label for="reset-password">New password</label>
       <div class="library-gate-row">
-        <input id="reset-password" name="password" type="password" required minlength="12" autocomplete="new-password">
+        <div class="library-password-field">
+          <input id="reset-password" name="password" type="password" required minlength="12" autocomplete="new-password">
+          <button type="button" id="reset-password-toggle" class="library-password-toggle" aria-pressed="false">Show</button>
+        </div>
         <button type="submit">Save password</button>
       </div>
       <p id="reset-msg" class="library-gate-msg" role="status" aria-live="polite" hidden></p>
     </form>
-    <p><a href="/#documents">Back to Society documents</a></p>
+    <p><a href="/handbook#documents">Back to Society documents</a></p>
   </section>
 </main>
 <script>
@@ -50,6 +53,16 @@
     show("This reset link is missing or incomplete. Request a new one from the handbook.");
     form.hidden = true;
     return;
+  }
+  var resetInput = document.getElementById("reset-password");
+  var resetToggle = document.getElementById("reset-password-toggle");
+  if (resetToggle && resetInput) {
+    resetToggle.addEventListener("click", function () {
+      var showPw = resetInput.type === "password";
+      resetInput.type = showPw ? "text" : "password";
+      resetToggle.textContent = showPw ? "Hide" : "Show";
+      resetToggle.setAttribute("aria-pressed", showPw ? "true" : "false");
+    });
   }
   form.addEventListener("submit", function (e) {
     e.preventDefault();
