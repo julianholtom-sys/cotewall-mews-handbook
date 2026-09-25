@@ -69,7 +69,7 @@
   function updateActiveFromScroll() {
     var mobile = mobileMq && mobileMq.matches;
     var line = mobile
-      ? railOffset() + 12
+      ? railOffset() + 16
       : Math.max(80, Math.round(window.innerHeight * 0.28));
     var active = sections.length ? sections[0].id : null;
     for (var i = 0; i < sections.length; i++) {
@@ -89,7 +89,20 @@
     e.preventDefault();
     syncRailOffset();
     if (map[id]) setOn(id);
-    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    var mobile = mobileMq && mobileMq.matches;
+    if (mobile) {
+      var y =
+        window.pageYOffset +
+        el.getBoundingClientRect().top -
+        railOffset() -
+        16;
+      window.scrollTo({
+        top: Math.max(0, y),
+        behavior: reduce ? "auto" : "smooth"
+      });
+    } else {
+      el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    }
   });
 
   var ticking = false;
