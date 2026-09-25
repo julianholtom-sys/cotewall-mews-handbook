@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css?v=28">
+<link rel="stylesheet" href="/css/styles.css?v=31">
 </head>
 <body>
 <header class="mast mast-compact">
@@ -100,7 +100,14 @@
         gate.hidden = true;
         panel.hidden = false;
         body.innerHTML = "";
-        (result.data.items || []).forEach(function (row) {
+        var items = result.data.items || [];
+        if (!items.length) {
+          var empty = document.createElement("tr");
+          empty.innerHTML =
+            '<td colspan="5">No access has been recorded yet.</td>';
+          body.appendChild(empty);
+        }
+        items.forEach(function (row) {
           var tr = document.createElement("tr");
           tr.innerHTML =
             "<td data-label=\"When\">" +

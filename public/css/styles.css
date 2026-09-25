@@ -404,7 +404,13 @@ strong{font-weight:600}
   line-height:1.3;
   color:var(--slate);
 }
+main.doc{
+  max-width:1120px;
+  margin:0 auto;
+  padding:40px 24px 96px;
+}
 .library-standalone{max-width:52rem;margin:2rem auto;padding:0 1.25rem 3rem}
+section.library-standalone{opacity:1;transform:none}
 .library-standalone h1{
   font-family:var(--display, Cinzel, serif);
   font-weight:500;
@@ -648,10 +654,17 @@ td{overflow-wrap:break-word}
 footer.doc{
   border-top:1px solid var(--line);
   margin-top:56px;
-  padding-top:14px;
+  padding-top:22px;
   color:var(--slate);
   font-style:normal;
   font-size:.92rem;
+}
+footer.doc:has(img){text-align:center}
+footer.doc img{
+  display:block;
+  width:80px;
+  height:auto;
+  margin:18px auto 0;
 }
 
 /* ---------- quick guide walkthrough ---------- */
@@ -961,7 +974,38 @@ footer.doc{
   .tblwrap td:first-child::before{margin-top:0}
   table{border:none;margin:14px 0}
 }
+.to-top{
+  position:fixed;
+  right:28px;
+  bottom:28px;
+  z-index:30;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  padding:11px 16px;
+  border:1px solid var(--brand);
+  border-radius:5pt;
+  background:var(--night);
+  color:var(--bone);
+  font-family:var(--sans);
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  line-height:1;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 12px 28px -18px rgba(11,11,11,.55);
+}
+.to-top:hover{color:var(--brand-bright)}
+.to-top:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+@media (min-width:861px){
+  .to-top:not([hidden]){display:inline-flex}
+}
+@media (max-width:860px){
+  .to-top{display:none !important}
+}
 @media print{
+  .to-top{display:none !important}
   nav.rail{display:none}
   .wrap{display:block}
   header.mast{-webkit-print-color-adjust:exact;print-color-adjust:exact}
