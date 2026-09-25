@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css?v=26">
+<link rel="stylesheet" href="/css/styles.css?v=27">
 </head>
 <body>
 
@@ -28,6 +28,8 @@
   <div class="site-tabs-inner">
     <a class="site-tab" href="/">Quick guide</a>
     <a class="site-tab" href="/handbook" aria-current="page">Full Handbook</a>
+    <a class="site-tab" href="/handbook#documents">Documents</a>
+    <button type="button" class="site-tab site-tab-out" id="sign-out">Sign out</button>
   </div>
 </nav>
 
@@ -283,9 +285,9 @@
 
 <section id="documents">
   <h2><span class="n">10</span><span class="t">Society documents</span><a class="up" href="#sections">Sections</a></h2>
-  <p>Society records are held in the Co-Owners Maintenance Society document folders. Residents may browse the published Society folders and view or save files from this website using their registered email address.</p>
+  <p>Society records are held in the Co-Owners Maintenance Society document folders. Your sign-in already covers these files: directors see the full set, and residents see the published folders only.</p>
   <div class="callout">
-    <p>Sign in with the email address registered for your apartment (the one the Directors hold on file). On first visit you will set your own password (at least 12 characters). After signing in you stay on this website and can open the Society folders and files available to your account.</p>
+    <p>Open a folder to view or save a file. You stay on this website.</p>
     <div id="library-gate" class="library-gate">
       <form id="library-email-form" autocomplete="username">
         <label for="library-email">Email address</label>
@@ -357,5 +359,6 @@
 </div>
 
 <script src="/js/main.js?v=9" defer></script>
+<script src="/js/session-nav.js?v=1" defer></script>
 </body>
 </html>

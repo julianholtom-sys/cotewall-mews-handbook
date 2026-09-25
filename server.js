@@ -41,7 +41,7 @@ const FAIL_LIMIT = 8;
 const FAIL_WINDOW_MS = 15 * 60 * 1000;
 
 const GENERIC_LOGIN_REJECT =
-  "That email is not registered for the document library. Use the address the Directors hold for your apartment. If you are unsure, write to directors@cotewall-mews.ltd.";
+  "That email is not registered. Use the address the Directors hold for your apartment. If you are unsure, write to directors@cotewall-mews.ltd.";
 const GENERIC_FORGOT_MSG =
   "If that address is registered, a reset link has been sent.";
 
@@ -86,23 +86,53 @@ function sessionPayload(user) {
 app.use(express.json({ limit: "8kb" }));
 app.use(express.urlencoded({ extended: false, limit: "8kb" }));
 
-app.get("/", (_req, res) => {
-  res.sendFile(path.join(publicDir, "guide.html"));
+function sendPrivate(res, file) {
+  res.setHeader("Cache-Control", "private, no-store");
+  return res.sendFile(file);
+}
+
+function safeNext(raw) {
+  const value = String(raw || "");
+  if (!value.startsWith("/") || value.startsWith("//") || value.includes("\\")) {
+    return "/";
+  }
+  if (value.startsWith("/api") || value.startsWith("/login")) return "/";
+  return value;
+}
+
+app.get("/", (req, res) => {
+  if (auth.getRequestUser(req)) {
+    return sendPrivate(res, path.join(publicDir, "guide.html"));
+  }
+  return sendPrivate(res, path.join(publicDir, "login.html"));
 });
 
-app.get("/handbook", (_req, res) => {
-  res.sendFile(path.join(publicDir, "index.html"));
+app.get("/handbook", (req, res) => {
+  if (!auth.getRequestUser(req)) {
+    return res.redirect("/?next=" + encodeURIComponent("/handbook"));
+  }
+  return sendPrivate(res, path.join(publicDir, "index.html"));
 });
 
-app.get("/library-log", (_req, res) => {
-  res.sendFile(path.join(publicDir, "library-log.html"));
+app.get("/library-log", (req, res) => {
+  if (!auth.getRequestUser(req)) {
+    return res.redirect("/?next=" + encodeURIComponent("/library-log"));
+  }
+  return sendPrivate(res, path.join(publicDir, "library-log.html"));
 });
 
 app.get("/library-reset", (_req, res) => {
+  res.setHeader("Cache-Control", "private, no-store");
   res.sendFile(path.join(publicDir, "library-reset.html"));
 });
 
-app.use(express.static(publicDir, { index: false, extensions: ["html"] }));
+app.get(["/index.html", "/guide.html", "/login.html", "/login"], (req, res) => {
+  const next = safeNext(req.query.next);
+  if (next !== "/") return res.redirect("/?next=" + encodeURIComponent(next));
+  return res.redirect("/");
+});
+
+app.use(express.static(publicDir, { index: false }));
 
 app.get("/api/library/health", (_req, res) => {
   return res.json({
@@ -475,8 +505,11 @@ app.post(
   }
 );
 
-app.use((_req, res) => {
-  res.status(404).sendFile(path.join(publicDir, "guide.html"));
+app.use((req, res) => {
+  if (!auth.getRequestUser(req)) {
+    return res.redirect("/");
+  }
+  return sendPrivate(res.status(404), path.join(publicDir, "guide.html"));
 });
 
 app.listen(PORT, () => {

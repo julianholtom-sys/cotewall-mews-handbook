@@ -518,7 +518,9 @@
       fetch("/api/library/logout", {
         method: "POST",
         credentials: "same-origin",
-      }).finally(hideBrowser);
+      }).finally(function () {
+        location.href = "/";
+      });
     });
   }
 

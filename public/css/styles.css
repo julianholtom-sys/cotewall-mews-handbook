@@ -123,6 +123,7 @@ header.mast.mast-compact .mast .kicker-sub{
   padding:0 24px;
   display:flex;
   gap:4px;
+  align-items:stretch;
 }
 .site-tab{
   position:relative;
@@ -135,9 +136,24 @@ header.mast.mast-compact .mast .kicker-sub{
   font-weight:600;
   font-size:.92rem;
   letter-spacing:.04em;
+  border:0;
   border-bottom:3px solid transparent;
+  background:none;
+  cursor:pointer;
   transition:color .2s ease, border-color .2s ease;
 }
+.site-tab-out{margin-left:auto}
+.login-panel{
+  max-width:36rem;
+  margin:0 auto;
+  padding:40px 24px 88px;
+}
+.login-note{
+  color:var(--ink-mid);
+  font-size:.98rem;
+  margin:0 0 10px;
+}
+.login-note a{color:var(--ink)}
 .site-tab:hover{color:rgba(255,255,255,.88)}
 .site-tab.on,
 .site-tab[aria-current="page"]{

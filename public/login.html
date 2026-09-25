@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sign in · Cotewall Mews</title>
+<meta name="description" content="Sign in to the Cotewall Mews residents' site.">
+<link rel="icon" href="/img/cwm-logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css?v=27">
+</head>
+<body class="page-guide">
+
+<header class="mast mast-compact">
+  <div class="mast-inner">
+    <img class="mast-logo" src="/img/cwm-logo.svg" width="150" height="150" alt="Cotewall Mews">
+    <div class="kicker">
+      <span class="kicker-brand">Cotewall Mews</span>
+      <h4 class="kicker-sub">Maintenance Society</h4>
+    </div>
+  </div>
+</header>
+
+<main class="login-panel">
+  <header class="doc-intro">
+    <h1>Residents' site</h1>
+    <p class="doc-lead">Sign in with the email the Directors hold for your apartment. On your first visit you will set a password.</p>
+  </header>
+
+  <div class="library-gate">
+    <form id="library-email-form" autocomplete="username">
+      <label for="library-email">Email address</label>
+      <div class="library-gate-row">
+        <input id="library-email" name="email" type="email" required autocomplete="username" />
+        <button type="submit">Continue</button>
+      </div>
+    </form>
+    <form id="library-password-form" class="library-password-form" autocomplete="current-password" hidden>
+      <p id="library-password-hint" class="library-hint"></p>
+      <label for="library-password">Password</label>
+      <div class="library-gate-row">
+        <div class="library-password-field">
+          <input id="library-password" name="password" type="password" required minlength="12" autocomplete="current-password" />
+          <button type="button" id="library-password-toggle" class="library-password-toggle" aria-pressed="false">Show</button>
+        </div>
+        <button type="submit" id="library-password-submit">Sign in</button>
+      </div>
+      <p class="library-gate-links">
+        <button type="button" id="library-back-email" class="library-text-btn">Use a different email</button>
+        <button type="button" id="library-forgot" class="library-text-btn">Forgotten password</button>
+      </p>
+    </form>
+    <p id="library-gate-msg" class="library-gate-msg" role="status" aria-live="polite" hidden></p>
+  </div>
+
+  <p class="login-note">The same sign-in opens the handbook and the Society documents.</p>
+  <p class="login-note">In an emergency call 999, or the National Gas Emergency line on 0800 111 999. Do not wait to sign in.</p>
+  <p class="login-note">If your email is not recognised, write to <a href="mailto:directors@cotewall-mews.ltd">directors@cotewall-mews.ltd</a>.</p>
+</main>
+
+<script src="/js/login.js?v=1" defer></script>
+</body>
+</html>
