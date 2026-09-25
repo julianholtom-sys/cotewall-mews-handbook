@@ -53,6 +53,7 @@
         <table>
           <thead>
             <tr>
+              <th>Apartment</th>
               <th>Email</th>
               <th>Role</th>
               <th>Password</th>
@@ -73,6 +74,12 @@
   var body = document.getElementById("log-body");
   var usersBody = document.getElementById("users-body");
   var userSelect = document.getElementById("log-user");
+
+  function who(apartment, email) {
+    var mail = email || "—";
+    if (apartment == null || apartment === "") return mail;
+    return String(apartment) + " · " + mail;
+  }
 
   function fmt(ts) {
     if (!ts) return "—";
@@ -113,7 +120,7 @@
             "<td data-label=\"When\">" +
             fmt(row.timestamp) +
             "</td><td data-label=\"User\">" +
-            (row.email || "—") +
+            who(row.apartment, row.email) +
             "</td><td data-label=\"Action\">" +
             row.action +
             "</td><td data-label=\"Path\">" +
@@ -141,7 +148,7 @@
         (result.data.users || []).forEach(function (u) {
           var opt = document.createElement("option");
           opt.value = String(u.id);
-          opt.textContent = u.email + " (" + u.role + ")";
+          opt.textContent = who(u.apartment, u.email) + " (" + u.role + ")";
           userSelect.appendChild(opt);
 
           var tr = document.createElement("tr");
@@ -156,7 +163,7 @@
               if (
                 !window.confirm(
                   "Clear password for " +
-                    u.email +
+                    who(u.apartment, u.email) +
                     "? They must set a new one on next sign-in."
                 )
               ) {
@@ -175,7 +182,9 @@
             clearCell.textContent = "—";
           }
           tr.innerHTML =
-            "<td data-label=\"Email\">" +
+            "<td data-label=\"Apartment\">" +
+            (u.apartment == null || u.apartment === "" ? "—" : String(u.apartment)) +
+            "</td><td data-label=\"Email\">" +
             u.email +
             "</td><td data-label=\"Role\">" +
             u.role +

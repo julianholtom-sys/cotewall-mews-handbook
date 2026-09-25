@@ -8,6 +8,7 @@ node_modules/
 _kdrive-seed/
 data/library.sqlite
 data/library.sqlite-*
+data/.access-log-cleared
 data/users-seed.json
 !data/users-seed.example.json
 
