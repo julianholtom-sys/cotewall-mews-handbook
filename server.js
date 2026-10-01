@@ -403,6 +403,26 @@ app.get("/api/library/browse", auth.requireAuth, async (req, res) => {
   }
 });
 
+function browserCanShow(meta) {
+  const mime = String((meta && meta.mime_type) || "").toLowerCase();
+  const filename = String((meta && meta.name) || "").toLowerCase();
+  if (
+    mime === "application/pdf" ||
+    mime.startsWith("image/") ||
+    mime.startsWith("text/") ||
+    mime.startsWith("audio/") ||
+    mime.startsWith("video/")
+  ) {
+    return true;
+  }
+  return /\.(pdf|png|jpe?g|gif|webp|svg|txt|csv|mp3|mp4|webm|wav)$/.test(filename);
+}
+
+function pdfViewName(name) {
+  const base = String(name || "document").replace(/\.[^.]+$/, "");
+  return (base || "document") + ".pdf";
+}
+
 async function serveLibraryFile(req, res) {
   if (!kdrive.hasApiToken()) {
     return res.status(503).json({
@@ -440,8 +460,13 @@ async function serveLibraryFile(req, res) {
 
     const name = allowed.meta.name || "download";
     const pathLabel = allowed.path || name;
+    const viewing = disposition === "inline";
+    const convertForView = viewing && !browserCanShow(allowed.meta);
 
-    let dlRes = await kdrive.downloadFile(fileId);
+    let dlRes = await kdrive.downloadFile(
+      fileId,
+      convertForView ? { convert: "pdf" } : null
+    );
     if (dlRes.status >= 300 && dlRes.status < 400) {
       const location = dlRes.headers.get("location");
       if (location) {
@@ -449,9 +474,11 @@ async function serveLibraryFile(req, res) {
       }
     }
     if (!dlRes.ok) {
-      return res
-        .status(502)
-        .json({ error: "Download is not available right now." });
+      return res.status(502).json({
+        error: convertForView
+          ? "This file cannot be opened in the browser. Use Save."
+          : "Download is not available right now.",
+      });
     }
 
     db.writeAccessLog({
@@ -462,14 +489,16 @@ async function serveLibraryFile(req, res) {
     });
     db.markLibrarySeen(user.id, fileId);
 
-    const contentType =
-      dlRes.headers.get("content-type") ||
-      allowed.meta.mime_type ||
-      "application/octet-stream";
+    const contentType = convertForView
+      ? "application/pdf"
+      : dlRes.headers.get("content-type") ||
+        allowed.meta.mime_type ||
+        "application/octet-stream";
+    const downloadName = convertForView ? pdfViewName(name) : name;
     res.setHeader("Content-Type", contentType);
     res.setHeader(
       "Content-Disposition",
-      `${disposition}; filename*=UTF-8''${encodeURIComponent(name)}`
+      `${disposition}; filename*=UTF-8''${encodeURIComponent(downloadName)}`
     );
     res.setHeader("Cache-Control", "no-store");
     const buffer = Buffer.from(await dlRes.arrayBuffer());

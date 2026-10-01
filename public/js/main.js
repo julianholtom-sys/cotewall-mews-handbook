@@ -233,6 +233,32 @@
     updateBackButton();
   }
 
+  function refreshOpenFolder() {
+    if (!libraryTrail.length) return;
+    var current = libraryTrail[libraryTrail.length - 1];
+    openFolder(current.id, current.name, libraryTrail.length - 1);
+  }
+
+  function fileAction(item, label, disposition, openInBrowser) {
+    var link = document.createElement("a");
+    link.href =
+      "/api/library/file/" +
+      item.id +
+      "?disposition=" +
+      disposition;
+    link.textContent = label;
+    if (openInBrowser) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    } else if (item.name) {
+      link.setAttribute("download", item.name);
+    }
+    link.addEventListener("click", function () {
+      window.setTimeout(refreshOpenFolder, openInBrowser ? 6000 : 1200);
+    });
+    return link;
+  }
+
   function renderItems(items) {
     if (!libraryList) return;
     libraryList.innerHTML = "";
@@ -294,22 +320,8 @@
         });
         actions.appendChild(browse);
       } else {
-        var view = document.createElement("a");
-        view.href =
-          "/api/library/file/" +
-          item.id +
-          "?disposition=inline";
-        view.target = "_blank";
-        view.rel = "noopener noreferrer";
-        view.textContent = "View / save";
-        view.addEventListener("click", function () {
-          window.setTimeout(function () {
-            if (!libraryTrail.length) return;
-            var current = libraryTrail[libraryTrail.length - 1];
-            openFolder(current.id, current.name, libraryTrail.length - 1);
-          }, 700);
-        });
-        actions.appendChild(view);
+        actions.appendChild(fileAction(item, "View", "inline", true));
+        actions.appendChild(fileAction(item, "Save", "attachment", false));
       }
 
       li.appendChild(actions);
