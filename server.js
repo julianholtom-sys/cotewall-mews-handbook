@@ -26,6 +26,7 @@ const db = require("./lib/db");
 const auth = require("./lib/auth");
 const kdrive = require("./lib/kdrive");
 const mail = require("./lib/mail");
+const librarySync = require("./lib/library-sync");
 
 db.openDb();
 
@@ -367,12 +368,21 @@ app.get("/api/library/browse", auth.requireAuth, async (req, res) => {
       folderName = allowed.meta.name;
     }
 
+    let annotated = { items: mapped, unseenFolderIds: [] };
+    try {
+      await librarySync.syncLibraryCatalog();
+      annotated = librarySync.annotateBrowse(user, mapped);
+    } catch (_) {
+      annotated = { items: mapped, unseenFolderIds: [] };
+    }
+
     return res.json({
       id: folderId,
       name: folderName,
       parentId: folderId === kdrive.LIBRARY_ROOT_ID ? null : kdrive.LIBRARY_ROOT_ID,
       rootId: kdrive.LIBRARY_ROOT_ID,
-      items: mapped,
+      items: annotated.items,
+      unseenFolderIds: annotated.unseenFolderIds,
     });
   } catch (err) {
     if (err && err.code === "NO_TOKEN") {
@@ -444,6 +454,7 @@ async function serveLibraryFile(req, res) {
       filePath: pathLabel,
       ipAddress: ip,
     });
+    db.markLibrarySeen(user.id, fileId);
 
     const contentType =
       dlRes.headers.get("content-type") ||

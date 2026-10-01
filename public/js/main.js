@@ -144,6 +144,7 @@
   var libraryBrowser = document.getElementById("library-browser");
   var libraryList = document.getElementById("library-list");
   var libraryCrumbs = document.getElementById("library-crumbs");
+  var unseenFolders = {};
   var libraryStatus = document.getElementById("library-browser-status");
   var libraryBack = document.getElementById("library-back");
   var libraryClose = document.getElementById("library-close");
@@ -192,6 +193,15 @@
     });
   }
 
+  function unseenDot() {
+    var dot = document.createElement("span");
+    dot.className = "library-unseen";
+    dot.setAttribute("role", "img");
+    dot.setAttribute("aria-label", "New");
+    dot.title = "Not yet seen";
+    return dot;
+  }
+
   function renderCrumbs() {
     if (!libraryCrumbs) return;
     libraryCrumbs.innerHTML = "";
@@ -206,12 +216,14 @@
         var currentCrumb = document.createElement("span");
         currentCrumb.className = "library-crumb-current";
         currentCrumb.textContent = crumb.name;
+        if (unseenFolders[crumb.id]) currentCrumb.appendChild(unseenDot());
         libraryCrumbs.appendChild(currentCrumb);
       } else {
         var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "library-crumb";
         btn.textContent = crumb.name;
+        if (unseenFolders[crumb.id]) btn.appendChild(unseenDot());
         btn.addEventListener("click", function () {
           openFolder(crumb.id, crumb.name, index);
         });
@@ -252,12 +264,20 @@
         openBtn.addEventListener("click", function () {
           openFolder(item.id, item.name, libraryTrail.length);
         });
-        main.appendChild(openBtn);
+        var title = document.createElement("span");
+        title.className = "library-item-title";
+        title.appendChild(openBtn);
+        if (item.unseen) title.appendChild(unseenDot());
+        main.appendChild(title);
       } else {
         var name = document.createElement("span");
         name.className = "library-item-name";
         name.textContent = item.name;
-        main.appendChild(name);
+        var fileTitle = document.createElement("span");
+        fileTitle.className = "library-item-title";
+        fileTitle.appendChild(name);
+        if (item.unseen) fileTitle.appendChild(unseenDot());
+        main.appendChild(fileTitle);
       }
 
       li.appendChild(main);
@@ -282,6 +302,13 @@
         view.target = "_blank";
         view.rel = "noopener noreferrer";
         view.textContent = "View / save";
+        view.addEventListener("click", function () {
+          window.setTimeout(function () {
+            if (!libraryTrail.length) return;
+            var current = libraryTrail[libraryTrail.length - 1];
+            openFolder(current.id, current.name, libraryTrail.length - 1);
+          }, 700);
+        });
         actions.appendChild(view);
       }
 
@@ -370,8 +397,12 @@
         }
         if (result.data && result.data.name) {
           libraryTrail[libraryTrail.length - 1].name = result.data.name;
-          renderCrumbs();
         }
+        unseenFolders = {};
+        (result.data.unseenFolderIds || []).forEach(function (id) {
+          unseenFolders[id] = true;
+        });
+        renderCrumbs();
         setBrowserStatus("");
         renderItems((result.data && result.data.items) || []);
       })

@@ -594,6 +594,17 @@ section.library-standalone{opacity:1;transform:none}
   text-transform:uppercase;
   color:var(--slate);
 }
+.library-item-title{display:flex;align-items:center;gap:8px;min-width:0}
+.library-unseen{
+  flex:0 0 auto;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#1f8a4c;
+  box-shadow:0 0 0 2px color-mix(in srgb, #1f8a4c 28%, transparent);
+}
+.library-crumb .library-unseen,
+.library-crumb-current .library-unseen{display:inline-block;margin-left:6px;vertical-align:middle}
 .library-item-name{
   border:0;
   background:none;
