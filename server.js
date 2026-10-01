@@ -351,12 +351,12 @@ app.get("/api/library/browse", auth.requireAuth, async (req, res) => {
 
     const payload = await listRes.json();
     const items = Array.isArray(payload.data) ? payload.data : [];
-    const mapped = items
-      .filter(function (item) {
-        if (!item || !item.name || kdrive.isPlaceholder(item.name)) return false;
-        if (user.role === "director") return true;
-        return !kdrive.isExcludedLibraryItem(item);
-      })
+    const visible = items.filter(function (item) {
+      if (!item || !item.name || kdrive.isPlaceholder(item.name)) return false;
+      if (user.role === "director") return true;
+      return !kdrive.isExcludedLibraryItem(item);
+    });
+    const mapped = visible
       .map(kdrive.mapItem)
       .sort(function (a, b) {
         if (a.type !== b.type) return a.type === "dir" ? -1 : 1;
@@ -370,8 +370,14 @@ app.get("/api/library/browse", auth.requireAuth, async (req, res) => {
 
     let annotated = { items: mapped, unseenFolderIds: [] };
     try {
-      await librarySync.syncLibraryCatalog();
+      librarySync.recordBrowse(folderId, folderName, visible, {
+        residentVisible:
+          user.role === "director"
+            ? !kdrive.isExcludedLibraryItem(allowed.meta || { id: folderId, type: "dir", name: folderName })
+            : true,
+      });
       annotated = librarySync.annotateBrowse(user, mapped);
+      librarySync.scheduleCatalogSync();
     } catch (_) {
       annotated = { items: mapped, unseenFolderIds: [] };
     }
